@@ -1,1 +1,1205 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>مصطلحات البزنس</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Nunito:wght@600;700;800;900&display=swap');
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  * { -webkit-tap-highlight-color: transparent; }
+  body {
+    min-height: 100vh;
+    background: #FFFFFF;
+    font-family: 'Cairo', sans-serif;
+    direction: rtl;
+    color: #3C3C3C;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+    -webkit-touch-callout: none;
+  }
+  .center-screen { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; padding: 24px; text-align: center; }
 
+  /* Map */
+  .map-screen { padding: 16px 16px 60px; max-width: 480px; margin: 0 auto; }
+  .top-stat-bar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+  .app-title { font-weight: 800; font-size: 17px; }
+  .stat-pill { display: flex; align-items: center; gap: 6px; background: #FFF4E0; border: 2px solid #FFC800; border-radius: 999px; padding: 6px 12px; font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 14px; color: #FF9600; }
+  .mascot-banner { display: flex; align-items: center; gap: 12px; background: #F7F7F7; border-radius: 16px; padding: 16px; margin-bottom: 30px; }
+  .mascot-emoji { font-size: 40px; }
+  .mascot-bubble { font-weight: 700; font-size: 14px; color: #4B4B4B; }
+
+  .level-section { margin-bottom: 10px; }
+  .level-header { text-align: center; margin-bottom: 18px; }
+  .level-title { font-weight: 800; font-size: 16px; color: #3C3C3C; }
+  .level-sub { font-size: 12px; color: #AFAFAF; font-weight: 600; margin-top: 2px; }
+  .level-header-locked .level-title { color: #AFAFAF; }
+  .level-header-locked .level-sub { color: #CFCFCF; }
+
+  .path { display: flex; flex-direction: column; align-items: center; gap: 28px; padding-top: 10px; padding-bottom: 34px; }
+  .path-row { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+  .node { width: 76px; height: 76px; border-radius: 50%; background: #58CC02; box-shadow: 0 6px 0 #46A302; border: none; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+  .node:active { transform: translateY(6px); box-shadow: 0 0 0 #46A302; }
+  .node-locked { background: #E5E5E5; box-shadow: 0 6px 0 #CFCFCF; cursor: not-allowed; }
+  .node-locked:active { transform: none; box-shadow: 0 6px 0 #CFCFCF; }
+  .node-status-red { background: #FF4B4B; box-shadow: 0 6px 0 #EA2B2B; }
+  .node-status-green { background: #58CC02; box-shadow: 0 6px 0 #46A302; }
+  .node-status-gold { background: #FFC800; box-shadow: 0 6px 0 #E0AC00; }
+  .node-emoji { font-size: 32px; }
+  .node-label { text-align: center; }
+  .node-title { font-weight: 700; font-size: 13px; color: #4B4B4B; max-width: 140px; }
+  .node-stars { display: flex; gap: 2px; justify-content: center; margin-top: 3px; }
+  .star { font-size: 14px; }
+  .gold-pill { margin-top: 6px; font-family: 'Cairo', sans-serif; font-weight: 800; font-size: 11px; padding: 5px 10px; border-radius: 999px; border: none; background: #FFF4E0; color: #FF9600; cursor: pointer; }
+  .gold-pill:active { transform: translateY(1px); }
+
+  .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); max-width: 90%; background: #3C3C3C; color: white; font-weight: 700; font-size: 13px; padding: 12px 20px; border-radius: 12px; text-align: center; z-index: 20; box-shadow: 0 6px 20px rgba(0,0,0,0.2); }
+
+  /* Lesson */
+  .lesson-screen { max-width: 480px; margin: 0 auto; min-height: 100vh; display: flex; flex-direction: column; padding-bottom: 100px; }
+  .lesson-topbar { display: flex; align-items: center; gap: 14px; padding: 16px; }
+  .icon-btn-flat { background: none; border: none; cursor: pointer; padding: 0; font-size: 22px; color: #AFAFAF; }
+  .progress-track { flex: 1; height: 14px; background: #E5E5E5; border-radius: 999px; overflow: hidden; }
+  .progress-fill { height: 100%; background: #58CC02; border-radius: 999px; transition: width 0.3s ease; }
+  .hearts-row { display: flex; align-items: center; gap: 4px; }
+  .hearts-count { font-family: 'Nunito', sans-serif; font-weight: 800; color: #FF4B4B; font-size: 15px; }
+
+  .combo-banner { margin: 0 16px 4px; background: #FFF4E0; color: #FF9600; font-weight: 800; font-size: 12px; padding: 6px 12px; border-radius: 10px; display: flex; align-items: center; gap: 6px; width: fit-content; }
+
+  .q-body { padding: 10px 20px 20px; flex: 1; }
+  .q-prompt { font-size: 20px; font-weight: 800; margin: 10px 0 26px; }
+
+  .prompt-card { display: flex; align-items: center; gap: 14px; background: #F7F7F7; border-radius: 16px; padding: 20px; margin-bottom: 30px; }
+  .prompt-en { font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 22px; direction: ltr; }
+  .speaker-btn { width: 46px; height: 46px; border-radius: 50%; border: 2px solid #1CB0F6; background: white; display: flex; align-items: center; justify-content: center; cursor: pointer; flex: none; font-size: 18px; color: #1CB0F6; }
+
+  .bubble-card { display: flex; align-items: center; gap: 16px; margin-bottom: 30px; }
+  .bubble { background: #F7F7F7; border: 2px solid #E5E5E5; border-radius: 16px; padding: 14px 18px; font-weight: 700; font-size: 18px; }
+  .bubble-mascot { font-size: 44px; }
+
+  .teach-card { display: flex; flex-direction: column; align-items: center; gap: 16px; background: #F7F7F7; border-radius: 20px; padding: 40px 24px; margin-top: 10px; }
+  .teach-emoji { font-size: 72px; }
+  .teach-en { font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 26px; direction: ltr; }
+  .teach-bubble { background: white; border: 2px solid #E5E5E5; border-radius: 14px; padding: 10px 20px; font-weight: 700; font-size: 17px; color: #4B4B4B; }
+
+  .listen-card { display: flex; flex-direction: column; align-items: center; gap: 12px; background: #F7F7F7; border-radius: 16px; padding: 30px; margin-bottom: 30px; }
+  .speaker-btn-lg { width: 74px; height: 74px; border-radius: 50%; background: #1CB0F6; box-shadow: 0 5px 0 #1899D6; border: none; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 30px; color: white; }
+  .speaker-btn-lg:active { transform: translateY(5px); box-shadow: 0 0 0 #1899D6; }
+  .listen-hint { font-size: 12px; color: #AFAFAF; font-weight: 700; }
+
+  .repeat-card { display: flex; flex-direction: column; align-items: center; gap: 10px; background: #F7F7F7; border-radius: 16px; padding: 24px 20px; margin-bottom: 20px; }
+  .repeat-prompt { display: flex; align-items: center; gap: 12px; background: white; border-radius: 14px; padding: 14px 18px; border: 2px solid #E5E5E5; }
+  .repeat-mascot { font-size: 44px; margin: 6px 0; }
+  .mic-btn { width: 84px; height: 84px; border-radius: 50%; background: #1CB0F6; box-shadow: 0 6px 0 #1899D6; border: none; font-size: 36px; display: flex; align-items: center; justify-content: center; cursor: pointer; margin-top: 8px; }
+  .mic-btn:active { transform: translateY(6px); box-shadow: 0 0 0 #1899D6; }
+  .mic-btn.mic-recording { background: #FF4B4B; box-shadow: 0 6px 0 #EA2B2B; animation: pulse 1s ease-in-out infinite; }
+  @keyframes pulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.08); } }
+  .mic-hint { font-size: 13px; color: #6B6B6B; font-weight: 700; }
+  .repeat-skip { background: none; border: none; color: #AFAFAF; font-weight: 700; font-size: 13px; margin-top: 10px; cursor: pointer; text-decoration: underline; }
+  .mic-error { font-size: 12px; color: #EA2B2B; font-weight: 700; text-align: center; margin-top: 8px; max-width: 260px; }
+  .repeat-unsupported { font-size: 13px; color: #6B6B6B; font-weight: 700; text-align: center; margin-top: 6px; }
+  .self-report-row { display: flex; gap: 10px; margin-top: 8px; width: 100%; }
+  .self-btn { flex: 1; font-family: 'Cairo', sans-serif; font-weight: 700; font-size: 14px; padding: 12px; border-radius: 12px; border: 2px solid #E5E5E5; background: white; cursor: pointer; }
+  .self-correct { border-color: #58CC02; color: #58A700; }
+  .self-wrong { border-color: #FF4B4B; color: #EA2B2B; }
+  .heard-text { font-size: 14px; color: #6B6B6B; font-weight: 700; margin-top: 6px; }
+
+  .typed-wrap { display: flex; flex-direction: column; align-items: center; gap: 16px; margin-bottom: 20px; }
+  .typed-input { width: 100%; font-family: 'Nunito', sans-serif; font-size: 18px; font-weight: 700; padding: 16px 18px; border-radius: 14px; border: 2px solid #E5E5E5; outline: none; text-align: center; }
+  .typed-input:focus { border-color: #1CB0F6; }
+
+  .rank-badge-row { padding: 0 20px; margin-bottom: 6px; }
+  .rank-badge { display: inline-block; font-size: 11px; font-weight: 800; padding: 4px 12px; border-radius: 999px; }
+  .rank-badge-platinum { background: #E9EEF2; color: #7C93A8; }
+  .rank-badge-gold { background: #FFF4E0; color: #FF9600; }
+
+  .options-grid { display: flex; flex-direction: column; gap: 10px; }
+  .opt-card { display: flex; align-items: center; justify-content: space-between; gap: 10px; font-family: 'Nunito', sans-serif; font-weight: 700; font-size: 15px; padding: 16px 18px; border-radius: 14px; border: 2px solid #E5E5E5; border-bottom-width: 4px; background: white; color: #3C3C3C; cursor: pointer; text-align: right; direction: ltr; width: 100%; }
+  .opt-card span.opt-text { direction: rtl; unicode-bidi: plaintext; }
+  .opt-selected { border-color: #1CB0F6; background: #DDF4FF; color: #1CB0F6; }
+  .opt-correct { border-color: #58CC02; background: #D7FFB8; color: #58A700; }
+  .opt-wrong { border-color: #FF4B4B; background: #FFDFE0; color: #EA2B2B; }
+  .opt-disabled { opacity: 0.5; }
+  .opt-speaker { flex: none; cursor: pointer; color: #AFAFAF; font-size: 15px; }
+
+  .bottom-bar { position: fixed; bottom: 0; left: 0; right: 0; max-width: 480px; margin: 0 auto; background: white; border-top: 2px solid #E5E5E5; padding: 16px 20px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+  .bar-correct { background: #D7FFB8; border-top-color: #A5EA78; }
+  .bar-wrong { background: #FFDFE0; border-top-color: #FFAFC6; }
+  .feedback-row { display: flex; align-items: center; gap: 10px; flex: 1; }
+  .feedback-icon { font-size: 24px; }
+  .feedback-title { font-weight: 800; font-size: 15px; }
+  .bar-correct .feedback-title { color: #58A700; }
+  .bar-wrong .feedback-title { color: #EA2B2B; }
+  .feedback-answer { font-size: 12px; color: #6B6B6B; font-weight: 600; margin-top: 2px; }
+
+  .main-action-btn { font-family: 'Cairo', sans-serif; font-weight: 800; font-size: 15px; padding: 14px 30px; border-radius: 14px; border: none; background: #E5E5E5; color: #AFAFAF; box-shadow: 0 4px 0 #CFCFCF; cursor: pointer; min-width: 130px; }
+  .main-action-btn:not(:disabled) { background: #58CC02; color: white; box-shadow: 0 4px 0 #46A302; }
+  .main-action-btn:active:not(:disabled) { transform: translateY(4px); box-shadow: 0 0 0; }
+  .btn-continue-wrong { background: #FF4B4B !important; color: white; box-shadow: 0 4px 0 #EA2B2B !important; }
+
+  .summary-emoji { font-size: 64px; margin-bottom: 10px; }
+  .summary-title { font-size: 24px; font-weight: 800; margin: 0 0 8px; }
+  .summary-sub { color: #6B6B6B; font-weight: 600; margin: 0 0 24px; }
+  .summary-stats { margin-bottom: 30px; }
+  .stat-box { display: flex; align-items: center; gap: 8px; background: #FFF4E0; border: 2px solid #FFC800; border-radius: 14px; padding: 12px 22px; font-family: 'Nunito', sans-serif; font-weight: 800; color: #FF9600; font-size: 18px; }
+  .unlock-banner { background: #FFF4E0; border: 2px solid #FFC800; border-radius: 14px; padding: 14px 18px; font-weight: 800; font-size: 14px; color: #FF9600; margin-bottom: 20px; max-width: 320px; }
+  .secondary-link { background: none; border: none; color: #AFAFAF; font-weight: 700; margin-top: 14px; cursor: pointer; text-decoration: underline; display: block; }
+</style>
+</head>
+<body>
+<div id="app"></div>
+
+<script>
+// ---------------------------------------------------------------------------
+// Data
+// ---------------------------------------------------------------------------
+const CATEGORIES = [
+  { id: "finance", label: "المال والأرقام", emoji: "💰", level: 1 },
+  { id: "ops", label: "العمليات والاستراتيجية", emoji: "⚙️", level: 1 },
+  { id: "sales", label: "المبيعات والشراكات", emoji: "🤝", level: 1 },
+  { id: "meetings", label: "الاجتماعات والتواصل", emoji: "🗣️", level: 1 },
+  { id: "startups", label: "الشركات الناشئة", emoji: "🚀", level: 2 },
+  { id: "marketing", label: "التسويق", emoji: "📣", level: 2 },
+  { id: "hr", label: "الموارد البشرية", emoji: "🧑‍💻", level: 2 },
+  { id: "support", label: "خدمة العملاء", emoji: "🎧", level: 2 },
+  { id: "accounting", label: "المحاسبة", emoji: "🧮", level: 3 },
+  { id: "feasibility", label: "دراسات الجدوى", emoji: "📑", level: 3 },
+  { id: "strategy", label: "الخطط الاستراتيجية", emoji: "🧭", level: 3 },
+  { id: "taxes", label: "الضرائب", emoji: "🧾", level: 3 },
+];
+
+const LEVELS = [
+  { id: 1, label: "المستوى الأول", sub: "أساسيات البزنس" },
+  { id: 2, label: "المستوى الثاني", sub: "توسّع في المجالات" },
+  { id: 3, label: "المستوى الثالث", sub: "مصطلحات متقدمة" },
+];
+
+const PASS_STARS = 2; // need 2+ stars (70%+ accuracy) in every topic of a level to unlock the next one
+
+const RANKS = [
+  { id: "platinum", label: "بلاتيني", emoji: "🥈", desc: "اختيار من متعدد — تعرّف على المصطلح" },
+  { id: "gold", label: "ذهبي", emoji: "🥇", desc: "اكتب الإجابة بنفسك — استرجاع من الذاكرة" },
+];
+
+const TERMS = [
+  { en: "Revenue", ar: "الإيرادات", category: "finance", emoji: "💵" },
+  { en: "Net profit", ar: "صافي الربح", category: "finance", emoji: "📈" },
+  { en: "Profit margin", ar: "هامش الربح", category: "finance", emoji: "📊" },
+  { en: "Cash flow", ar: "التدفق النقدي", category: "finance", emoji: "💸" },
+  { en: "Budget", ar: "الميزانية", category: "finance", emoji: "🧾" },
+  { en: "Return on investment", ar: "العائد على الاستثمار", category: "finance", emoji: "📈" },
+  { en: "Break-even point", ar: "نقطة التعادل", category: "finance", emoji: "⚖️" },
+  { en: "Stakeholders", ar: "أصحاب المصلحة", category: "ops", emoji: "🧑‍🤝‍🧑" },
+  { en: "Scale up", ar: "توسيع العمل", category: "ops", emoji: "🔼" },
+  { en: "Growth", ar: "النمو", category: "ops", emoji: "🌱" },
+  { en: "Milestone", ar: "معلم مرحلي", category: "ops", emoji: "🏁" },
+  { en: "Deadline", ar: "الموعد النهائي", category: "ops", emoji: "⏰" },
+  { en: "Deliverable", ar: "المُخرج المطلوب", category: "ops", emoji: "📦" },
+  { en: "Deal", ar: "الصفقة", category: "sales", emoji: "🤝" },
+  { en: "Negotiation", ar: "التفاوض", category: "sales", emoji: "💬" },
+  { en: "Pitch", ar: "العرض التقديمي", category: "sales", emoji: "🎤" },
+  { en: "Client", ar: "العميل", category: "sales", emoji: "🧑‍💼" },
+  { en: "Supplier", ar: "المورد", category: "sales", emoji: "🚚" },
+  { en: "Contract", ar: "العقد", category: "sales", emoji: "📄" },
+  { en: "Terms and conditions", ar: "الشروط والأحكام", category: "sales", emoji: "📜" },
+  { en: "Follow up", ar: "المتابعة", category: "meetings", emoji: "🔁" },
+  { en: "Touch base", ar: "تواصل سريع", category: "meetings", emoji: "☎️" },
+  { en: "Agenda", ar: "جدول الأعمال", category: "meetings", emoji: "🗒️" },
+  { en: "Action items", ar: "المهام المطلوبة", category: "meetings", emoji: "✅" },
+  { en: "Feedback", ar: "الملاحظات", category: "meetings", emoji: "💭" },
+  { en: "Minimum viable product", ar: "أقل نسخة قابلة للتشغيل", category: "startups", emoji: "🧪" },
+  { en: "Pivot", ar: "تغيير الاستراتيجية", category: "startups", emoji: "🔄" },
+  { en: "Onboarding", ar: "عملية الضم", category: "startups", emoji: "🚪" },
+  { en: "Churn", ar: "معدل فقدان العملاء", category: "startups", emoji: "📉" },
+  { en: "Investor", ar: "المستثمر", category: "startups", emoji: "💼" },
+  { en: "Target audience", ar: "الجمهور المستهدف", category: "marketing", emoji: "🎯" },
+  { en: "Brand awareness", ar: "الوعي بالعلامة التجارية", category: "marketing", emoji: "🏷️" },
+  { en: "Campaign", ar: "الحملة الإعلانية", category: "marketing", emoji: "📢" },
+  { en: "Conversion rate", ar: "معدل التحويل", category: "marketing", emoji: "🔀" },
+  { en: "Engagement", ar: "التفاعل", category: "marketing", emoji: "❤️" },
+  { en: "Reach", ar: "مدى الانتشار", category: "marketing", emoji: "📡" },
+  { en: "Content strategy", ar: "استراتيجية المحتوى", category: "marketing", emoji: "🗂️" },
+  { en: "Recruitment", ar: "التوظيف", category: "hr", emoji: "🧲" },
+  { en: "Job description", ar: "الوصف الوظيفي", category: "hr", emoji: "📋" },
+  { en: "Payroll", ar: "كشف الرواتب", category: "hr", emoji: "💳" },
+  { en: "Performance review", ar: "تقييم الأداء", category: "hr", emoji: "📝" },
+  { en: "Employee benefits", ar: "مزايا الموظفين", category: "hr", emoji: "🎁" },
+  { en: "Resignation", ar: "الاستقالة", category: "hr", emoji: "🚶" },
+  { en: "Probation period", ar: "فترة الاختبار", category: "hr", emoji: "⏳" },
+  { en: "Customer satisfaction", ar: "رضا العملاء", category: "support", emoji: "😊" },
+  { en: "Complaint", ar: "الشكوى", category: "support", emoji: "⚠️" },
+  { en: "Refund", ar: "استرداد الأموال", category: "support", emoji: "💰" },
+  { en: "Response time", ar: "وقت الاستجابة", category: "support", emoji: "⏱️" },
+  { en: "Ticket", ar: "طلب الدعم", category: "support", emoji: "🎫" },
+  { en: "Escalate", ar: "تصعيد المشكلة", category: "support", emoji: "📤" },
+  { en: "Loyalty program", ar: "برنامج الولاء", category: "support", emoji: "🏆" },
+  { en: "Balance sheet", ar: "الميزانية العمومية", category: "accounting", emoji: "📊" },
+  { en: "Income statement", ar: "قائمة الدخل", category: "accounting", emoji: "📄" },
+  { en: "Assets", ar: "الأصول", category: "accounting", emoji: "🏦" },
+  { en: "Liabilities", ar: "الخصوم", category: "accounting", emoji: "📉" },
+  { en: "Depreciation", ar: "الإهلاك", category: "accounting", emoji: "⏳" },
+  { en: "Accounts payable", ar: "الحسابات الدائنة", category: "accounting", emoji: "💳" },
+  { en: "Accounts receivable", ar: "الحسابات المدينة", category: "accounting", emoji: "💰" },
+  { en: "Audit", ar: "المراجعة والتدقيق", category: "accounting", emoji: "🔍" },
+  { en: "Feasibility study", ar: "دراسة الجدوى", category: "feasibility", emoji: "📑" },
+  { en: "Market analysis", ar: "تحليل السوق", category: "feasibility", emoji: "📈" },
+  { en: "Cost estimate", ar: "تقدير التكلفة", category: "feasibility", emoji: "🧮" },
+  { en: "Risk assessment", ar: "تقييم المخاطر", category: "feasibility", emoji: "⚠️" },
+  { en: "SWOT analysis", ar: "تحليل سوات", category: "feasibility", emoji: "🧭" },
+  { en: "Projected revenue", ar: "الإيرادات المتوقعة", category: "feasibility", emoji: "📊" },
+  { en: "Payback period", ar: "فترة استرداد رأس المال", category: "feasibility", emoji: "⏱️" },
+  { en: "Vision statement", ar: "الرؤية", category: "strategy", emoji: "🔭" },
+  { en: "Mission statement", ar: "الرسالة", category: "strategy", emoji: "🎯" },
+  { en: "Strategic goal", ar: "هدف استراتيجي", category: "strategy", emoji: "🏆" },
+  { en: "Action plan", ar: "خطة عمل", category: "strategy", emoji: "🗺️" },
+  { en: "KPI", ar: "مؤشر أداء رئيسي", category: "strategy", emoji: "📶" },
+  { en: "Competitive advantage", ar: "ميزة تنافسية", category: "strategy", emoji: "⚔️" },
+  { en: "Long-term plan", ar: "خطة طويلة المدى", category: "strategy", emoji: "📅" },
+  { en: "Tax return", ar: "الإقرار الضريبي", category: "taxes", emoji: "🧾" },
+  { en: "VAT", ar: "ضريبة القيمة المضافة", category: "taxes", emoji: "💶" },
+  { en: "Tax deduction", ar: "خصم ضريبي", category: "taxes", emoji: "➖" },
+  { en: "Taxable income", ar: "الدخل الخاضع للضريبة", category: "taxes", emoji: "💰" },
+  { en: "Tax exemption", ar: "إعفاء ضريبي", category: "taxes", emoji: "🆓" },
+  { en: "Withholding tax", ar: "ضريبة الخصم والإضافة", category: "taxes", emoji: "✂️" },
+  { en: "Fiscal year", ar: "السنة المالية", category: "taxes", emoji: "📆" },
+];
+
+const QUESTIONS_PER_LESSON = 8;
+const START_HEARTS = 5;
+const PROGRESS_KEY = "business-english-duo-progress";
+
+// ---------------------------------------------------------------------------
+// Audio — built-in browser Text-to-Speech, no audio files needed
+// ---------------------------------------------------------------------------
+let ttsSupported = typeof window.speechSynthesis !== "undefined";
+let cachedVoices = [];
+
+function loadVoices() {
+  if (!ttsSupported) return;
+  cachedVoices = window.speechSynthesis.getVoices() || [];
+}
+if (ttsSupported) {
+  loadVoices();
+  window.speechSynthesis.onvoiceschanged = loadVoices;
+}
+
+function pickEnglishVoice() {
+  if (!cachedVoices.length) loadVoices();
+  const enVoices = cachedVoices.filter((v) => v.lang && v.lang.startsWith("en"));
+  return (
+    enVoices.find((v) => /google/i.test(v.name) && v.lang === "en-US") ||
+    enVoices.find((v) => v.lang === "en-US" && v.localService === false) ||
+    enVoices.find((v) => v.lang === "en-US") ||
+    enVoices[0] ||
+    cachedVoices[0] ||
+    null
+  );
+}
+
+function speak(text, onFail) {
+  if (!ttsSupported) {
+    if (onFail) onFail();
+    return;
+  }
+  try {
+    window.speechSynthesis.resume();
+    window.speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = "en-US";
+    u.rate = 0.45;
+    u.volume = 1;
+    u.pitch = 1;
+    const voice = pickEnglishVoice();
+    if (voice) u.voice = voice;
+    if (onFail) {
+      u.onerror = onFail;
+      let started = false;
+      u.onstart = () => { started = true; };
+      setTimeout(() => {
+        if (!started && window.speechSynthesis.speaking === false) onFail();
+      }, 800);
+    }
+    // Small delay helps some Android WebViews that ignore an immediate speak() call
+    setTimeout(() => window.speechSynthesis.speak(u), 50);
+  } catch (e) {
+    if (onFail) onFail();
+  }
+}
+
+function shuffle(arr) {
+  return [...arr].sort(() => Math.random() - 0.5);
+}
+
+// ---------------------------------------------------------------------------
+// Feedback sound effects — generated on the fly with the Web Audio API,
+// no sound files needed (same "no files, works anywhere" approach as speak()).
+// ---------------------------------------------------------------------------
+let audioCtx = null;
+function getAudioCtx() {
+  if (!audioCtx) {
+    const Ctx = window.AudioContext || window.webkitAudioContext;
+    if (Ctx) audioCtx = new Ctx();
+  }
+  if (audioCtx && audioCtx.state === "suspended") audioCtx.resume();
+  return audioCtx;
+}
+
+function playTone(freq, startTime, duration, ctx, type = "sine", peakGain = 0.22) {
+  const osc = ctx.createOscillator();
+  const gain = ctx.createGain();
+  osc.type = type;
+  osc.frequency.value = freq;
+  gain.gain.setValueAtTime(0, startTime);
+  gain.gain.linearRampToValueAtTime(peakGain, startTime + 0.015);
+  gain.gain.exponentialRampToValueAtTime(0.001, startTime + duration);
+  osc.connect(gain);
+  gain.connect(ctx.destination);
+  osc.start(startTime);
+  osc.stop(startTime + duration + 0.02);
+}
+
+function playCorrectSound() {
+  const ctx = getAudioCtx();
+  if (!ctx) return;
+  const now = ctx.currentTime;
+  // cheerful two-note rising chime, like Duolingo's correct "ding"
+  playTone(880, now, 0.16, ctx);
+  playTone(1318.5, now + 0.1, 0.22, ctx);
+}
+
+function playWrongSound() {
+  const ctx = getAudioCtx();
+  if (!ctx) return;
+  const now = ctx.currentTime;
+  // short low buzz
+  playTone(220, now, 0.18, ctx, "square", 0.13);
+  playTone(174.6, now + 0.12, 0.22, ctx, "square", 0.13);
+}
+
+// ---------------------------------------------------------------------------
+// Speech recognition — for the "repeat after me" mic exercise
+// ---------------------------------------------------------------------------
+const SpeechRecognitionCtor = window.SpeechRecognition || window.webkitSpeechRecognition;
+let activeRecognition = null;
+
+function stopRecognition() {
+  if (activeRecognition) {
+    try { activeRecognition.onresult = null; activeRecognition.onerror = null; activeRecognition.onend = null; activeRecognition.stop(); } catch (e) {}
+    activeRecognition = null;
+  }
+}
+
+function normalizeWords(s) {
+  return s.toLowerCase().replace(/[^a-z0-9\s]/g, "").trim().split(/\s+/).filter(Boolean);
+}
+
+function speechMatches(said, expected) {
+  const a = new Set(normalizeWords(said));
+  const b = normalizeWords(expected);
+  if (!b.length) return false;
+  let match = 0;
+  b.forEach((w) => { if (a.has(w)) match++; });
+  return match / b.length >= 0.6;
+}
+
+// ---------------------------------------------------------------------------
+// Typed-answer matching — used by the Gold rank's written exercises
+// ---------------------------------------------------------------------------
+function normalizeArabic(s) {
+  return String(s)
+    .trim()
+    .replace(/[\u064B-\u0652]/g, "") // strip tashkeel
+    .replace(/[إأآا]/g, "ا")
+    .replace(/ى/g, "ي")
+    .replace(/ة/g, "ه")
+    .replace(/\s+/g, " ");
+}
+
+function normalizeArabicWords(s) {
+  return normalizeArabic(s).split(/\s+/).filter(Boolean);
+}
+
+function arabicTypedMatches(typed, expected) {
+  const a = normalizeArabic(typed);
+  const b = normalizeArabic(expected);
+  if (!a) return false;
+  if (a === b) return true;
+  const aw = new Set(normalizeArabicWords(typed));
+  const bw = normalizeArabicWords(expected);
+  if (!bw.length) return false;
+  let match = 0;
+  bw.forEach((w) => { if (aw.has(w)) match++; });
+  return match / bw.length >= 0.7;
+}
+
+function englishTypedMatches(typed, expected) {
+  const a = normalizeWords(typed).join(" ");
+  const b = normalizeWords(expected).join(" ");
+  if (a && a === b) return true;
+  return speechMatches(typed, expected);
+}
+
+function startRecognition(expectedText) {
+  if (!SpeechRecognitionCtor) {
+    setState({ recognitionUnsupported: true });
+    return;
+  }
+  if (!window.isSecureContext) {
+    setState({ micError: "الميكروفون محتاج رابط آمن (https) — افتح التطبيق من رابط GitHub Pages بتاعه مش من ملف على الجهاز مباشرة" });
+    return;
+  }
+  stopRecognition();
+  setState({ micError: null });
+  try {
+    const rec = new SpeechRecognitionCtor();
+    rec.lang = "en-US";
+    rec.maxAlternatives = 3;
+    rec.interimResults = false;
+    activeRecognition = rec;
+    rec.onstart = () => setState({ recording: true, micError: null });
+    rec.onerror = (e) => {
+      activeRecognition = null;
+      const messages = {
+        "not-allowed": "لازم توافق على إذن المايكروفون من المتصفح — لو رفضته بالغلط، افتح إعدادات الموقع وسمحله",
+        "service-not-allowed": "لازم توافق على إذن المايكروفون من المتصفح — لو رفضته بالغلط، افتح إعدادات الموقع وسمحله",
+        "no-speech": "مسمعتش أي صوت، جرب تاني وتكلم أعلى شوية وأقرب للمايك",
+        "audio-capture": "مفيش مايكروفون شغال متاح على الجهاز ده",
+        "network": "في مشكلة اتصال أثناء التسجيل، جرب تاني",
+        "aborted": null,
+      };
+      const msg = Object.prototype.hasOwnProperty.call(messages, e.error) ? messages[e.error] : "حصلت مشكلة في التسجيل، جرب تاني";
+      setState({ recording: false, micError: msg });
+    };
+    rec.onresult = (e) => {
+      const said = e.results[0][0].transcript;
+      const correct = speechMatches(said, expectedText);
+      activeRecognition = null;
+      if (correct) {
+        playCorrectSound();
+        setState({ recording: false, answered: true, correctCount: state.correctCount + 1, combo: state.combo + 1, heardText: said, repeatCorrect: true });
+      } else {
+        playWrongSound();
+        setState({ recording: false, answered: true, combo: 0, hearts: Math.max(0, state.hearts - 1), heardText: said, repeatCorrect: false });
+      }
+    };
+    rec.onend = () => { activeRecognition = null; if (state.recording) setState({ recording: false }); };
+    rec.start();
+  } catch (e) {
+    setState({ recognitionUnsupported: true });
+  }
+}
+
+function buildLesson(categoryId, rank) {
+  const pool = TERMS.filter((t) => t.category === categoryId);
+  const questions = [];
+  const typePool = rank === "gold"
+    ? ["type-en", "type-ar", "dictation"]
+    : ["term-to-meaning", "meaning-to-term", "listening", "repeat"];
+  const noOptionTypes = ["repeat", "type-en", "type-ar", "dictation"];
+  for (let i = 0; i < QUESTIONS_PER_LESSON; i++) {
+    const term = pool[Math.floor(Math.random() * pool.length)];
+    const type = typePool[Math.floor(Math.random() * typePool.length)];
+    if (noOptionTypes.includes(type)) {
+      questions.push({ term, type, options: [] });
+      continue;
+    }
+    const distractorPool = pool.filter((t) => t.en !== term.en);
+    const distractors = shuffle(distractorPool).slice(0, 3);
+    const field = type === "meaning-to-term" ? "en" : "ar";
+    const options = shuffle([term[field], ...distractors.map((d) => d[field])]);
+    questions.push({ term, type, options });
+  }
+  return questions;
+}
+
+function loadProgress() {
+  try {
+    const raw = window.localStorage.getItem(PROGRESS_KEY);
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      const migrated = { xp: parsed.xp || 0, categories: {} };
+      Object.keys(parsed.categories || {}).forEach((id) => {
+        const entry = parsed.categories[id];
+        if (!entry) return;
+        if (entry.platinum) {
+          migrated.categories[id] = entry;
+        } else {
+          // old flat shape from before ranks existed — treat as platinum progress
+          migrated.categories[id] = {
+            platinum: { bestAccuracy: entry.bestAccuracy || 0, stars: entry.stars || 0, timesCompleted: entry.timesCompleted || 0 },
+            gold: { bestAccuracy: 0, stars: 0, timesCompleted: 0 },
+          };
+        }
+      });
+      return migrated;
+    }
+  } catch (e) {}
+  return { xp: 0, categories: {} };
+}
+
+function saveProgress(p) {
+  try {
+    window.localStorage.setItem(PROGRESS_KEY, JSON.stringify(p));
+  } catch (e) {}
+}
+
+// ---------------------------------------------------------------------------
+// State
+// ---------------------------------------------------------------------------
+let savedMapScroll = 0;
+let state = {
+  view: "map",
+  progress: loadProgress(),
+  activeCategory: null,
+  activeRank: "platinum",
+  teachTerms: [],
+  teachIndex: 0,
+  teachAutoPlayed: -1,
+  lessonQuestions: [],
+  qIndex: 0,
+  hearts: START_HEARTS,
+  selected: null,
+  answered: false,
+  correctCount: 0,
+  combo: 0,
+  autoPlayedIndex: -1,
+  recording: false,
+  heardText: null,
+  recognitionUnsupported: false,
+  repeatCorrect: false,
+  micError: null,
+  toast: null,
+  justUnlockedGold: false,
+};
+
+function setState(patch) {
+  state = { ...state, ...patch };
+  render();
+}
+
+// ---------------------------------------------------------------------------
+// Level gating — a level unlocks once every topic in the previous level
+// has been passed (PASS_STARS or more)
+// ---------------------------------------------------------------------------
+function isLevelPassed(levelId) {
+  const cats = CATEGORIES.filter((c) => c.level === levelId);
+  return cats.every((c) => {
+    const p = state.progress.categories[c.id];
+    return p && p.platinum && p.platinum.stars >= PASS_STARS;
+  });
+}
+
+function isCategoryUnlocked(cat) {
+  if (cat.level === 1) return true;
+  return isLevelPassed(cat.level - 1);
+}
+
+function isGoldUnlocked(categoryId) {
+  const p = state.progress.categories[categoryId];
+  return p && p.platinum && p.platinum.stars >= PASS_STARS;
+}
+
+function showToast(msg) {
+  setState({ toast: msg });
+  setTimeout(() => {
+    if (state.toast === msg) setState({ toast: null });
+  }, 2600);
+}
+
+// ---------------------------------------------------------------------------
+// Actions
+// ---------------------------------------------------------------------------
+function categoryStatus(cat) {
+  const p = state.progress.categories[cat.id];
+  const platinumStars = p && p.platinum ? p.platinum.stars : 0;
+  const goldStars = p && p.gold ? p.gold.stars : 0;
+  if (goldStars >= PASS_STARS) return "gold"; // mastered — passed the written (gold) test, the highest rank
+  if (platinumStars >= PASS_STARS) return "green"; // passed platinum, gold now available
+  return "red"; // not passed yet
+}
+
+function handleNodeTap(categoryId) {
+  const cat = CATEGORIES.find((c) => c.id === categoryId);
+  if (cat && !isCategoryUnlocked(cat)) {
+    showToast(`لازم تجيب نجمتين على الأقل في كل مواضيع المستوى اللي قبله عشان يتفتح 🔒`);
+    return;
+  }
+  savedMapScroll = window.scrollY;
+  startLesson(categoryId, "platinum");
+}
+
+function handleGoldTap(categoryId) {
+  if (!isGoldUnlocked(categoryId)) {
+    showToast("لازم تاخد نجمتين على الأقل في البلاتيني الأول عشان الذهبي يتفتح 🔒");
+    return;
+  }
+  savedMapScroll = window.scrollY;
+  startLesson(categoryId, "gold");
+}
+
+function startLesson(categoryId, rank) {
+  const chosenRank = rank || "platinum";
+  if (chosenRank === "gold" && !isGoldUnlocked(categoryId)) {
+    showToast("لازم تاخد نجمتين على الأقل في البلاتيني الأول عشان الذهبي يتفتح 🔒");
+    return;
+  }
+  stopRecognition();
+  const questions = buildLesson(categoryId, chosenRank);
+  const seen = new Set();
+  const teachTerms = [];
+  questions.forEach((q) => {
+    if (!seen.has(q.term.en)) {
+      seen.add(q.term.en);
+      teachTerms.push(q.term);
+    }
+  });
+  setState({
+    view: "teach",
+    activeCategory: categoryId,
+    activeRank: chosenRank,
+    teachTerms,
+    teachIndex: 0,
+    teachAutoPlayed: -1,
+    lessonQuestions: questions,
+    qIndex: 0,
+    hearts: START_HEARTS,
+    selected: null,
+    answered: false,
+    correctCount: 0,
+    combo: 0,
+    autoPlayedIndex: -1,
+    recording: false,
+    heardText: null,
+    recognitionUnsupported: false,
+    repeatCorrect: false,
+    micError: null,
+  });
+}
+
+function nextTeachCard() {
+  if (state.teachIndex + 1 >= state.teachTerms.length) {
+    setState({ view: "lesson" });
+  } else {
+    setState({ teachIndex: state.teachIndex + 1 });
+  }
+}
+
+function selectOption(opt) {
+  if (state.answered) return;
+  setState({ selected: opt });
+}
+
+function currentQuestion() {
+  return state.lessonQuestions[state.qIndex];
+}
+
+function isCorrectOption(opt) {
+  const q = currentQuestion();
+  if (!q) return false;
+  const field = q.type === "meaning-to-term" ? "en" : "ar";
+  return opt === q.term[field];
+}
+
+function handleCheck() {
+  if (!state.selected) return;
+  const correct = isCorrectOption(state.selected);
+  if (correct) {
+    playCorrectSound();
+    setState({ answered: true, correctCount: state.correctCount + 1, combo: state.combo + 1 });
+  } else {
+    playWrongSound();
+    setState({ answered: true, combo: 0, hearts: Math.max(0, state.hearts - 1) });
+  }
+}
+
+function handleCheckTyped() {
+  const inputEl = document.getElementById("typedInput");
+  if (!inputEl) return;
+  const typed = inputEl.value.trim();
+  if (!typed) return;
+  const q = currentQuestion();
+  let correct = false;
+  if (q.type === "type-en" || q.type === "dictation") {
+    correct = englishTypedMatches(typed, q.term.en);
+  } else if (q.type === "type-ar") {
+    correct = arabicTypedMatches(typed, q.term.ar);
+  }
+  if (correct) {
+    playCorrectSound();
+    setState({ answered: true, correctCount: state.correctCount + 1, combo: state.combo + 1, repeatCorrect: true, heardText: typed });
+  } else {
+    playWrongSound();
+    setState({ answered: true, combo: 0, hearts: Math.max(0, state.hearts - 1), repeatCorrect: false, heardText: typed });
+  }
+}
+
+function selfReportCorrect() {
+  playCorrectSound();
+  setState({ answered: true, correctCount: state.correctCount + 1, combo: state.combo + 1, repeatCorrect: true });
+}
+
+function selfReportWrong() {
+  playWrongSound();
+  setState({ answered: true, combo: 0, hearts: Math.max(0, state.hearts - 1), repeatCorrect: false });
+}
+
+function repeatSkip() {
+  stopRecognition();
+  if (state.qIndex + 1 >= state.lessonQuestions.length) {
+    finishLesson(state.correctCount);
+    return;
+  }
+  setState({
+    qIndex: state.qIndex + 1,
+    selected: null,
+    answered: false,
+    recording: false,
+    heardText: null,
+    recognitionUnsupported: false,
+    repeatCorrect: false,
+    micError: null,
+  });
+}
+
+function finishLesson(finalCorrect) {
+  const accuracy = Math.round((finalCorrect / QUESTIONS_PER_LESSON) * 100);
+  const stars = accuracy >= 90 ? 3 : accuracy >= 70 ? 2 : accuracy >= 50 ? 1 : 0;
+  const earnedXp = finalCorrect * 10;
+  const rank = state.activeRank || "platinum";
+  const prevEntry = state.progress.categories[state.activeCategory] || {
+    platinum: { bestAccuracy: 0, stars: 0, timesCompleted: 0 },
+    gold: { bestAccuracy: 0, stars: 0, timesCompleted: 0 },
+  };
+  const prevRank = prevEntry[rank] || { bestAccuracy: 0, stars: 0, timesCompleted: 0 };
+  const justUnlockedGold = rank === "platinum" && prevRank.stars < PASS_STARS && stars >= PASS_STARS;
+  const nextProgress = {
+    xp: state.progress.xp + earnedXp,
+    categories: {
+      ...state.progress.categories,
+      [state.activeCategory]: {
+        ...prevEntry,
+        [rank]: {
+          bestAccuracy: Math.max(prevRank.bestAccuracy, accuracy),
+          stars: Math.max(prevRank.stars, stars),
+          timesCompleted: prevRank.timesCompleted + 1,
+        },
+      },
+    },
+  };
+  saveProgress(nextProgress);
+  setState({ progress: nextProgress, view: "summary", justUnlockedGold });
+}
+
+function handleContinue() {
+  stopRecognition();
+  if (state.hearts <= 0) {
+    setState({ view: "failed" });
+    return;
+  }
+  if (state.qIndex + 1 >= state.lessonQuestions.length) {
+    finishLesson(state.correctCount);
+    return;
+  }
+  setState({
+    qIndex: state.qIndex + 1,
+    selected: null,
+    answered: false,
+    recording: false,
+    heardText: null,
+    recognitionUnsupported: false,
+    repeatCorrect: false,
+    micError: null,
+  });
+}
+
+// ---------------------------------------------------------------------------
+// Render
+// ---------------------------------------------------------------------------
+function render() {
+  const app = document.getElementById("app");
+  if (state.view === "map") app.innerHTML = renderMap();
+  else if (state.view === "teach") app.innerHTML = renderTeach();
+  else if (state.view === "lesson") app.innerHTML = renderLesson();
+  else if (state.view === "summary") app.innerHTML = renderSummary();
+  else if (state.view === "failed") app.innerHTML = renderFailed();
+  attachHandlers();
+
+  // scroll behavior: entering a lesson/teach/summary/failed screen starts at
+  // the top; returning to the map restores exactly where you tapped from
+  if (state.view === "map") {
+    requestAnimationFrame(() => window.scrollTo(0, savedMapScroll));
+  } else {
+    window.scrollTo(0, 0);
+  }
+
+  // auto-play teaching cards once per word
+  if (state.view === "teach") {
+    const t = state.teachTerms[state.teachIndex];
+    if (t && state.teachAutoPlayed !== state.teachIndex) {
+      state.teachAutoPlayed = state.teachIndex;
+      setTimeout(() => speak(t.en), 350);
+    }
+  }
+
+  // auto-play listening questions once per question
+  if (state.view === "lesson") {
+    const q = currentQuestion();
+    if (q && (q.type === "listening" || q.type === "dictation") && state.autoPlayedIndex !== state.qIndex) {
+      state.autoPlayedIndex = state.qIndex;
+      setTimeout(() => speak(q.term.en), 350);
+    }
+  }
+}
+
+function renderMap() {
+  const offsets = [0, 46, -10, 40, -20];
+  let globalIndex = 0;
+
+  const levelSections = LEVELS.map((level) => {
+    const catsInLevel = CATEGORIES.filter((c) => c.level === level.id);
+    const levelUnlocked = level.id === 1 || isLevelPassed(level.id - 1);
+    const levelPassed = isLevelPassed(level.id);
+
+    const rows = catsInLevel.map((cat) => {
+      const catProgress = state.progress.categories[cat.id];
+      const stars = catProgress && catProgress.platinum ? catProgress.platinum.stars : 0;
+      const goldStars = catProgress && catProgress.gold ? catProgress.gold.stars : 0;
+      const unlocked = isCategoryUnlocked(cat);
+      const status = unlocked ? categoryStatus(cat) : "locked";
+      const goldUnlocked = unlocked && isGoldUnlocked(cat.id);
+      const starsHtml = [1, 2, 3]
+        .map((n) => `<span class="star">${n <= stars ? "⭐" : "☆"}</span>`)
+        .join("");
+      const offset = offsets[globalIndex % offsets.length];
+      globalIndex++;
+      const goldPill = goldUnlocked
+        ? `<button class="gold-pill" data-gold-start="${cat.id}">🥇 اختبار الذهبي${goldStars >= PASS_STARS ? " ✓" : ""}</button>`
+        : "";
+      return `
+        <div class="path-row" style="transform: translateX(${offset}px)">
+          <button class="node ${unlocked ? `node-status-${status}` : "node-locked"}" data-start="${cat.id}">
+            <span class="node-emoji">${unlocked ? cat.emoji : "🔒"}</span>
+          </button>
+          <div class="node-label">
+            <div class="node-title">${cat.label}</div>
+            <div class="node-stars">${starsHtml}</div>
+            ${goldPill}
+          </div>
+        </div>`;
+    }).join("");
+
+    return `
+      <div class="level-section">
+        <div class="level-header ${levelUnlocked ? "" : "level-header-locked"}">
+          <div class="level-title">${levelUnlocked ? "" : "🔒 "}${level.label}${levelPassed ? " ✓" : ""}</div>
+          <div class="level-sub">${level.sub}</div>
+        </div>
+        <div class="path">${rows}</div>
+      </div>`;
+  }).join("");
+
+  return `
+    <div class="map-screen">
+      <div class="top-stat-bar">
+        <div class="stat-pill">🔥 <span>${state.progress.xp}</span></div>
+        <div class="app-title">مصطلحات البزنس</div>
+      </div>
+      <div class="mascot-banner">
+        <div class="mascot-emoji">🦉</div>
+        <div class="mascot-bubble">يلا نتعلم مصطلحات بزنس جديدة النهاردة!</div>
+      </div>
+      ${levelSections}
+      ${state.toast ? `<div class="toast">${state.toast}</div>` : ""}
+    </div>`;
+}
+
+function renderTeach() {
+  const t = state.teachTerms[state.teachIndex];
+  const total = state.teachTerms.length;
+  const progressPct = Math.round(((state.teachIndex + 1) / total) * 100);
+  return `
+    <div class="lesson-screen">
+      <div class="lesson-topbar">
+        <button class="icon-btn-flat" id="closeBtn">✕</button>
+        <div class="progress-track"><div class="progress-fill" style="width:${progressPct}%"></div></div>
+      </div>
+      <div class="q-body">
+        <h2 class="q-prompt">كلمة جديدة</h2>
+        <div class="teach-card">
+          <div class="teach-emoji">${t.emoji || "📘"}</div>
+          <button class="speaker-btn" id="teachSpeakBtn" data-speak="${escapeAttr(t.en)}">🔊</button>
+          <div class="teach-en">${t.en}</div>
+          <div class="teach-bubble">${t.ar}</div>
+        </div>
+      </div>
+      <div class="bottom-bar">
+        <button class="main-action-btn" id="teachContinueBtn" style="width:100%">متابعة</button>
+      </div>
+    </div>`;
+}
+
+function renderLesson() {
+  const q = currentQuestion();
+  const total = state.lessonQuestions.length;
+  const progressPct = Math.round(((state.qIndex + (state.answered ? 1 : 0)) / total) * 100);
+  const isRepeat = q.type === "repeat";
+  const isTyped = q.type === "type-en" || q.type === "type-ar" || q.type === "dictation";
+  const isFreeform = isRepeat || isTyped;
+
+  const promptLabel =
+    q.type === "term-to-meaning" ? "اختر الترجمة الصحيحة" :
+    q.type === "meaning-to-term" ? "اختر المصطلح الصحيح" :
+    q.type === "listening" ? "استمع واختر الترجمة الصحيحة" :
+    q.type === "repeat" ? "كرّر بعد المتحدث" :
+    q.type === "type-en" ? "اكتب المصطلح بالإنجليزي" :
+    q.type === "type-ar" ? "اكتب المعنى بالعربي" :
+    "استمع واكتب اللي سمعته";
+
+  let questionCard = "";
+  if (q.type === "term-to-meaning") {
+    questionCard = `
+      <div class="prompt-card">
+        <button class="speaker-btn" data-speak="${escapeAttr(q.term.en)}">🔊</button>
+        <span class="prompt-en">${q.term.en}</span>
+      </div>`;
+  } else if (q.type === "meaning-to-term") {
+    questionCard = `
+      <div class="bubble-card">
+        <div class="bubble">${q.term.ar}</div>
+        <div class="bubble-mascot">🧑‍💼</div>
+      </div>`;
+  } else if (q.type === "listening") {
+    questionCard = `
+      <div class="listen-card">
+        <button class="speaker-btn-lg" data-speak="${escapeAttr(q.term.en)}">🔊</button>
+        <span class="listen-hint">اضغط عشان تسمع تاني</span>
+      </div>`;
+  } else if (q.type === "repeat") {
+    questionCard = `
+      <div class="repeat-card">
+        <div class="repeat-prompt">
+          <button class="speaker-btn" data-speak="${escapeAttr(q.term.en)}">🔊</button>
+          <span class="prompt-en">${q.term.en}</span>
+        </div>
+        <div class="repeat-mascot">🦉</div>`;
+    if (!state.answered) {
+      if (state.recognitionUnsupported) {
+        questionCard += `
+        <div class="repeat-unsupported">متصفحك مش بيدعم تسجيل الصوت — قيّم نفسك بأمانة:</div>
+        <div class="self-report-row">
+          <button class="self-btn self-correct" id="selfCorrectBtn">✅ قلتها صح</button>
+          <button class="self-btn self-wrong" id="selfWrongBtn">❌ قلتها غلط</button>
+        </div>`;
+      } else {
+        questionCard += `
+        <button class="mic-btn ${state.recording ? "mic-recording" : ""}" id="micBtn">🎙️</button>
+        <div class="mic-hint">${state.recording ? "بيسمعك دلوقتي..." : "دوس واتكلم"}</div>`;
+        if (state.micError) questionCard += `<div class="mic-error">${state.micError}</div>`;
+      }
+      questionCard += `<button class="repeat-skip" id="repeatSkipBtn">مش قادر أتكلم دلوقتي</button>`;
+    } else if (state.heardText) {
+      questionCard += `<div class="heard-text">سمعتك تقول: "${state.heardText}"</div>`;
+    }
+    questionCard += `</div>`;
+  } else {
+    // written exercises — type-en / type-ar / dictation (Gold rank)
+    const isArabicInput = q.type === "type-ar";
+    let stimulus = "";
+    if (q.type === "type-en") {
+      stimulus = `<div class="bubble-card" style="margin-bottom:20px;">
+        <div class="bubble">${q.term.ar}</div>
+        <div class="bubble-mascot">🧑‍💼</div>
+      </div>`;
+    } else if (q.type === "type-ar") {
+      stimulus = `<div class="prompt-card">
+        <button class="speaker-btn" data-speak="${escapeAttr(q.term.en)}">🔊</button>
+        <span class="prompt-en">${q.term.en}</span>
+      </div>`;
+    } else {
+      stimulus = `<div class="listen-card">
+        <button class="speaker-btn-lg" data-speak="${escapeAttr(q.term.en)}">🔊</button>
+        <span class="listen-hint">اضغط عشان تسمع تاني</span>
+      </div>`;
+    }
+    questionCard = `<div class="typed-wrap">${stimulus}`;
+    if (!state.answered) {
+      questionCard += `
+        <input type="text" id="typedInput" class="typed-input" dir="${isArabicInput ? "rtl" : "ltr"}"
+          placeholder="${isArabicInput ? "اكتب هنا بالعربي..." : "type here..."}" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />`;
+    } else if (state.heardText) {
+      questionCard += `<div class="heard-text">انت كتبت: "${state.heardText}"</div>`;
+    }
+    questionCard += `</div>`;
+  }
+
+  let optionsHtml = "";
+  if (!isFreeform) {
+    optionsHtml = q.options.map((opt) => {
+      let cls = "opt-card";
+      const isSel = state.selected === opt;
+      if (state.answered) {
+        if (isCorrectOption(opt)) cls += " opt-correct";
+        else if (isSel) cls += " opt-wrong";
+        else cls += " opt-disabled";
+      } else if (isSel) {
+        cls += " opt-selected";
+      }
+      const speakerHtml = q.type === "meaning-to-term"
+        ? `<span class="opt-speaker" data-speak="${escapeAttr(opt)}">🔊</span>`
+        : "";
+      return `<button class="${cls}" data-opt="${escapeAttr(opt)}" ${state.answered ? "disabled" : ""}>
+        ${speakerHtml}<span class="opt-text">${opt}</span>
+      </button>`;
+    }).join("");
+  }
+
+  const comboHtml = state.combo >= 2
+    ? `<div class="combo-banner">🔥 سلسلة ${state.combo} صح متتالية!</div>` : "";
+
+  let bottomBar = "";
+  if (!state.answered) {
+    if (isTyped) {
+      bottomBar = `
+        <div class="bottom-bar">
+          <button class="main-action-btn" id="checkTypedBtn" disabled>تحقّق</button>
+        </div>`;
+    } else if (!isRepeat) {
+      bottomBar = `
+        <div class="bottom-bar">
+          <button class="main-action-btn" id="checkBtn" ${!state.selected ? "disabled" : ""}>تحقّق</button>
+        </div>`;
+    }
+    // repeat type has its own inline actions (mic / self-report / skip) — no bottom bar needed yet
+  } else {
+    const wasCorrect = isFreeform ? state.repeatCorrect : (state.selected && isCorrectOption(state.selected));
+    const answerField = (q.type === "meaning-to-term" || q.type === "repeat" || q.type === "type-en" || q.type === "dictation") ? q.term.en : q.term.ar;
+    bottomBar = `
+      <div class="bottom-bar ${wasCorrect ? "bar-correct" : "bar-wrong"}">
+        <div class="feedback-row">
+          <span class="feedback-icon">${wasCorrect ? "✅" : "❌"}</span>
+          <div>
+            <div class="feedback-title">${wasCorrect ? "صح! أحسنت 🎉" : (isRepeat ? "قريب، حاول تاني المرة الجاية" : "غلط")}</div>
+            ${!wasCorrect ? `<div class="feedback-answer">${isRepeat ? "الكلمة كانت" : "الإجابة الصحيحة"}: ${answerField}</div>` : ""}
+          </div>
+        </div>
+        <button class="main-action-btn ${wasCorrect ? "" : "btn-continue-wrong"}" id="continueBtn">متابعة</button>
+      </div>`;
+  }
+
+  return `
+    <div class="lesson-screen">
+      <div class="lesson-topbar">
+        <button class="icon-btn-flat" id="closeBtn">✕</button>
+        <div class="progress-track"><div class="progress-fill" style="width:${progressPct}%"></div></div>
+        <div class="hearts-row">❤️ <span class="hearts-count">${state.hearts}</span></div>
+      </div>
+      <div class="rank-badge-row"><span class="rank-badge rank-badge-${state.activeRank}">${state.activeRank === "gold" ? "🥇 ذهبي" : "🥈 بلاتيني"}</span></div>
+      ${comboHtml}
+      <div class="q-body">
+        <h2 class="q-prompt">${promptLabel}</h2>
+        ${questionCard}
+        ${!isFreeform ? `<div class="options-grid">${optionsHtml}</div>` : ""}
+      </div>
+      ${bottomBar}
+    </div>`;
+}
+
+function renderSummary() {
+  const accuracy = Math.round((state.correctCount / QUESTIONS_PER_LESSON) * 100);
+  const unlockHtml = state.justUnlockedGold
+    ? `<div class="unlock-banner">🥇 مبروك! اتفتحلك المستوى الذهبي في الموضوع ده — اختبارات كتابية</div>`
+    : "";
+  return `
+    <div class="center-screen">
+      <div class="summary-emoji">🎉</div>
+      <h1 class="summary-title">الدرس خلص!</h1>
+      <p class="summary-sub">جبت ${state.correctCount} من ${QUESTIONS_PER_LESSON} صح (${accuracy}%)</p>
+      <div class="summary-stats"><div class="stat-box">🔥 <span>+${state.correctCount * 10} XP</span></div></div>
+      ${unlockHtml}
+      <button class="main-action-btn" id="doneBtn">متابعة</button>
+    </div>`;
+}
+
+function renderFailed() {
+  return `
+    <div class="center-screen">
+      <div class="summary-emoji">💔</div>
+      <h1 class="summary-title">خسرت كل قلوبك</h1>
+      <p class="summary-sub">مفيش مشكلة، جرب تاني وهتحفظ المصطلحات أكتر</p>
+      <button class="main-action-btn" id="retryBtn">حاول تاني</button>
+      <button class="secondary-link" id="exitBtn">رجوع للخريطة</button>
+    </div>`;
+}
+
+function escapeAttr(str) {
+  return String(str).replace(/"/g, "&quot;");
+}
+
+// ---------------------------------------------------------------------------
+// Event delegation
+// ---------------------------------------------------------------------------
+function attachHandlers() {
+  document.querySelectorAll("[data-start]").forEach((btn) => {
+    btn.addEventListener("click", () => handleNodeTap(btn.getAttribute("data-start")));
+  });
+  document.querySelectorAll("[data-gold-start]").forEach((btn) => {
+    btn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      handleGoldTap(btn.getAttribute("data-gold-start"));
+    });
+  });
+  document.querySelectorAll("[data-speak]").forEach((btn) => {
+    btn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      speak(btn.getAttribute("data-speak"));
+    });
+  });
+  document.querySelectorAll("[data-opt]").forEach((btn) => {
+    btn.addEventListener("click", () => selectOption(btn.getAttribute("data-opt")));
+  });
+  const checkBtn = document.getElementById("checkBtn");
+  if (checkBtn) checkBtn.addEventListener("click", handleCheck);
+  const checkTypedBtn = document.getElementById("checkTypedBtn");
+  if (checkTypedBtn) checkTypedBtn.addEventListener("click", handleCheckTyped);
+  const typedInput = document.getElementById("typedInput");
+  if (typedInput) {
+    typedInput.focus();
+    typedInput.addEventListener("input", () => {
+      const btn = document.getElementById("checkTypedBtn");
+      if (btn) btn.disabled = !typedInput.value.trim();
+    });
+    typedInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" && typedInput.value.trim()) handleCheckTyped();
+    });
+  }
+  const continueBtn = document.getElementById("continueBtn");
+  if (continueBtn) continueBtn.addEventListener("click", handleContinue);
+  const closeBtn = document.getElementById("closeBtn");
+  if (closeBtn) closeBtn.addEventListener("click", () => { stopRecognition(); setState({ view: "map" }); });
+  const micBtn = document.getElementById("micBtn");
+  if (micBtn) micBtn.addEventListener("click", () => {
+    const q = currentQuestion();
+    if (q) startRecognition(q.term.en);
+  });
+  const selfCorrectBtn = document.getElementById("selfCorrectBtn");
+  if (selfCorrectBtn) selfCorrectBtn.addEventListener("click", selfReportCorrect);
+  const selfWrongBtn = document.getElementById("selfWrongBtn");
+  if (selfWrongBtn) selfWrongBtn.addEventListener("click", selfReportWrong);
+  const repeatSkipBtn = document.getElementById("repeatSkipBtn");
+  if (repeatSkipBtn) repeatSkipBtn.addEventListener("click", repeatSkip);
+  const teachContinueBtn = document.getElementById("teachContinueBtn");
+  if (teachContinueBtn) teachContinueBtn.addEventListener("click", nextTeachCard);
+  const doneBtn = document.getElementById("doneBtn");
+  if (doneBtn) doneBtn.addEventListener("click", () => setState({ view: "map" }));
+  const retryBtn = document.getElementById("retryBtn");
+  if (retryBtn) retryBtn.addEventListener("click", () => startLesson(state.activeCategory, state.activeRank));
+  const exitBtn = document.getElementById("exitBtn");
+  if (exitBtn) exitBtn.addEventListener("click", () => setState({ view: "map" }));
+}
+
+render();
+</script>
+</body>
+</html>
