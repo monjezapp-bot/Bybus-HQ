@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#12151C" />
+    <title>Bybus HQ — المقر الافتراضي</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="font-cairo">
+    <script>
+      window.addEventListener("error", function (e) {
+        showFatalError(e.message + "\n" + (e.filename || "") + ":" + (e.lineno || ""));
+      });
+      window.addEventListener("unhandledrejection", function (e) {
+        showFatalError("Promise rejection: " + (e.reason && e.reason.message ? e.reason.message : e.reason));
+      });
+      function showFatalError(text) {
+        var el = document.getElementById("fatal-error-box");
+        if (!el) {
+          el = document.createElement("div");
+          el.id = "fatal-error-box";
+          el.style.cssText =
+            "position:fixed;top:0;left:0;right:0;z-index:99999;background:#fee2e2;color:#991b1b;" +
+            "padding:16px;font-family:monospace;font-size:12px;white-space:pre-wrap;direction:ltr;text-align:left;" +
+            "border-bottom:3px solid #ef4444;max-height:60vh;overflow:auto;";
+          document.body.appendChild(el);
+        }
+        el.textContent += "\n\n" + text;
+      }
+    </script>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
