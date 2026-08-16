@@ -15,8 +15,8 @@
   <body class="font-cairo">
     <script>
       window.addEventListener("error", function (e) {
-        showFatalError(e.message + "\n" + (e.filename || "") + ":" + (e.lineno || ""));
-      });
+        showFatalError((e.message || "فشل تحميل ملف") + "\n" + (e.filename || (e.target && e.target.src) || "") + ":" + (e.lineno || ""));
+      }, true);
       window.addEventListener("unhandledrejection", function (e) {
         showFatalError("Promise rejection: " + (e.reason && e.reason.message ? e.reason.message : e.reason));
       });
