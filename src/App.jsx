@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import {
   Home, ClipboardList, Building2, LogOut, Loader2, AlertCircle,
   CheckCircle2, Circle, Clock, ChevronLeft, ChevronRight,
-  FileText, Users, Eye, EyeOff, Plus, Calendar,
+  FileText, Users, Eye, EyeOff, Plus, Calendar, GraduationCap,
 } from "lucide-react";
 import { supabase } from "./supabaseClient";
 
@@ -112,17 +112,17 @@ function AuthScreen() {
   }
 
   return (
-    <div className="min-h-screen w-full flex items-center justify-center bg-hq-ink px-4" dir="rtl">
+    <div className="min-h-screen w-full flex items-center justify-center bg-gray-50 px-4" dir="rtl">
       <div className="w-full max-w-sm">
         <div className="flex flex-col items-center mb-8">
-          <div className="rounded-3xl p-4 mb-3 bg-white/5 border border-white/10">
+          <div className="rounded-3xl p-4 mb-3 bg-white border border-gray-100 shadow-sm">
             <BybusHQMark size={52} />
           </div>
-          <h1 className="text-2xl font-bold text-white">Bybus HQ</h1>
+          <h1 className="text-2xl font-bold text-gray-800">Bybus HQ</h1>
           <p className="text-gray-400 text-sm mt-1">المقر الافتراضي للشركة</p>
         </div>
 
-        <div className="flex bg-white/5 rounded-2xl p-1 mb-5">
+        <div className="flex bg-gray-100 rounded-2xl p-1 mb-5">
           <button
             onClick={() => { setMode("login"); setError(""); setInfo(""); }}
             className="flex-1 rounded-xl py-2.5 text-sm font-bold transition-colors"
@@ -216,7 +216,7 @@ function IdentityLinkScreen({ userId, onLinked }) {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-hq-ink px-4" dir="rtl">
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4" dir="rtl">
       <div className="w-full max-w-sm bg-white rounded-2xl p-6">
         <h2 className="text-lg font-bold text-gray-800 mb-1">مين حضرتك؟</h2>
         <p className="text-xs text-gray-400 mb-5">أول دخول — اختار اسمك من قايمة الشركاء عشان نربط حسابك.</p>
@@ -236,7 +236,7 @@ function IdentityLinkScreen({ userId, onLinked }) {
                   <div className="text-sm font-bold text-gray-800">{m.full_name}</div>
                   <div className="text-xs text-gray-400">{m.role_title}</div>
                 </div>
-                {linking === m.id ? <Loader2 size={16} className="animate-spin text-gray-400" /> : <ChevronLeft size={16} className="text-gray-300" />}
+                {linking === m.id ? <Loader2 size={16} className="animate-spin text-gray-400" /> : <ChevronLeft size={16} className="text-gray-600" />}
               </button>
             ))}
           </div>
@@ -258,8 +258,8 @@ function FlightProgressCard({ lifecyclePhases, onOpen }) {
     >
       <div className="relative h-56 px-6 pt-6 pb-0">
         <div className="flex items-center justify-between mb-1">
-          <span className="text-[11px] font-bold text-white/60 tracking-wide mono">FLIGHT PROGRESS</span>
-          <span className="text-[11px] font-bold text-white/80 flex items-center gap-1.5">
+          <span className="text-[11px] font-bold text-gray-400 tracking-wide mono">FLIGHT PROGRESS</span>
+          <span className="text-[11px] font-bold text-gray-500 flex items-center gap-1.5">
             رحلة Bybus <ChevronLeft size={13} className="opacity-70 group-hover:-translate-x-0.5 transition-transform" />
           </span>
         </div>
@@ -297,7 +297,7 @@ function FlightProgressCard({ lifecyclePhases, onOpen }) {
               <div key={p.id} className="flex flex-col items-center" style={{ width: `${100 / lifecyclePhases.length}%` }}>
                 <span className="text-base leading-none mb-1 opacity-90">{LIFECYCLE_ICONS[i]}</span>
                 <span
-                  className={`text-[10px] font-bold text-center leading-tight ${current ? "text-white" : done ? "text-white/70" : "text-white/40"}`}
+                  className={`text-[10px] font-bold text-center leading-tight ${current ? "text-white" : done ? "text-gray-400" : "text-white/40"}`}
                 >
                   {p.name}
                 </span>
@@ -347,7 +347,7 @@ function HomePage({ member, onNavigate }) {
     <div className="pb-10">
       <div className="flex items-center justify-between mb-5">
         <div>
-          <h1 className="text-xl font-bold text-white">أهلاً، {member.full_name.split(" ")[0]}</h1>
+          <h1 className="text-xl font-bold text-gray-800">أهلاً، {member.full_name.split(" ")[0]}</h1>
           <p className="text-sm text-gray-400 mt-0.5">{member.role_title}</p>
         </div>
       </div>
@@ -359,23 +359,23 @@ function HomePage({ member, onNavigate }) {
           <FlightProgressCard lifecyclePhases={lifecyclePhases} onOpen={() => onNavigate("strategic")} />
 
           {currentPhase && (
-            <div className="mt-4 rounded-2xl bg-white/5 border border-white/10 p-4 text-sm text-gray-300">
+            <div className="mt-4 rounded-2xl bg-white border border-gray-100 shadow-sm p-4 text-sm text-gray-600">
               <span className="text-gray-500">المرحلة الحالية: </span>
-              <span className="font-bold text-white">{currentPhase.name}</span>
+              <span className="font-bold text-gray-800">{currentPhase.name}</span>
             </div>
           )}
 
           {summary && (
             <div className="grid grid-cols-3 gap-3 mt-5">
-              <div className="rounded-2xl bg-white/5 border border-white/10 p-4 text-center">
-                <div className="text-2xl font-bold text-white mono">{summary.not_started}</div>
+              <div className="rounded-2xl bg-white border border-gray-100 shadow-sm p-4 text-center">
+                <div className="text-2xl font-bold text-gray-800 mono">{summary.not_started}</div>
                 <div className="text-[11px] text-gray-400 mt-1">لم تبدأ</div>
               </div>
-              <div className="rounded-2xl bg-white/5 border border-white/10 p-4 text-center">
+              <div className="rounded-2xl bg-white border border-gray-100 shadow-sm p-4 text-center">
                 <div className="text-2xl font-bold text-amber-400 mono">{summary.in_progress}</div>
                 <div className="text-[11px] text-gray-400 mt-1">قيد التنفيذ</div>
               </div>
-              <div className="rounded-2xl bg-white/5 border border-white/10 p-4 text-center">
+              <div className="rounded-2xl bg-white border border-gray-100 shadow-sm p-4 text-center">
                 <div className="text-2xl font-bold text-emerald-400 mono">{summary.completed}</div>
                 <div className="text-[11px] text-gray-400 mt-1">تم</div>
               </div>
@@ -384,13 +384,13 @@ function HomePage({ member, onNavigate }) {
 
           <div className="mt-6">
             <div className="flex items-center justify-between mb-3">
-              <h2 className="text-sm font-bold text-white">مهام اليوم</h2>
+              <h2 className="text-sm font-bold text-gray-800">مهام اليوم</h2>
               <button onClick={() => onNavigate("mytasks")} className="text-xs text-sky font-bold flex items-center gap-1">
                 كل المهام <ChevronLeft size={13} />
               </button>
             </div>
             {todayTasks.length === 0 ? (
-              <div className="rounded-2xl bg-white/5 border border-white/10 p-6 text-center text-sm text-gray-400">
+              <div className="rounded-2xl bg-white border border-gray-100 shadow-sm p-6 text-center text-sm text-gray-400">
                 مفيش مهام مستحقة عليك النهاردة 🎉
               </div>
             ) : (
@@ -398,10 +398,10 @@ function HomePage({ member, onNavigate }) {
                 {todayTasks.map((t) => (
                   <button
                     key={t.id} onClick={() => onNavigate("task", t.id)}
-                    className="text-right rounded-2xl bg-white/5 border border-white/10 p-4 hover:bg-white/10 transition-colors"
+                    className="text-right rounded-2xl bg-white border border-gray-100 shadow-sm p-4 hover:bg-gray-50 transition-colors"
                   >
                     <div className="flex items-center justify-between gap-2">
-                      <span className="text-sm font-semibold text-white">{t.title}</span>
+                      <span className="text-sm font-semibold text-gray-800">{t.title}</span>
                       <StatusBadge status={t.status} />
                     </div>
                     <div className="text-[11px] text-gray-500 mt-1.5">{t.department_name}</div>
@@ -452,57 +452,57 @@ function StrategicPlanPage({ onNavigate }) {
 
   return (
     <div className="pb-10">
-      <h1 className="text-xl font-bold text-white mb-5">الخطة الاستراتيجية</h1>
+      <h1 className="text-xl font-bold text-gray-800 mb-5">الخطة الاستراتيجية</h1>
       <ErrorBanner message={error} />
 
       {profile && (
         <div className="flex flex-col gap-3 mb-6">
-          <div className="rounded-2xl bg-white/5 border border-white/10 p-4">
+          <div className="rounded-2xl bg-white border border-gray-100 shadow-sm p-4">
             <div className="text-[11px] font-bold text-sky mb-1.5">الرؤية</div>
-            <p className="text-sm text-gray-300 leading-relaxed">{profile.vision_statement}</p>
+            <p className="text-sm text-gray-600 leading-relaxed">{profile.vision_statement}</p>
           </div>
-          <div className="rounded-2xl bg-white/5 border border-white/10 p-4">
+          <div className="rounded-2xl bg-white border border-gray-100 shadow-sm p-4">
             <div className="text-[11px] font-bold text-mint mb-1.5">الرسالة</div>
-            <p className="text-sm text-gray-300 leading-relaxed">{profile.mission_statement}</p>
+            <p className="text-sm text-gray-600 leading-relaxed">{profile.mission_statement}</p>
           </div>
-          <div className="rounded-2xl bg-white/5 border border-white/10 p-4">
+          <div className="rounded-2xl bg-white border border-gray-100 shadow-sm p-4">
             <div className="text-[11px] font-bold text-orange mb-1.5">الأهداف الاستراتيجية الكبرى</div>
-            <p className="text-sm text-gray-300 leading-relaxed">{profile.major_strategic_goals}</p>
+            <p className="text-sm text-gray-600 leading-relaxed">{profile.major_strategic_goals}</p>
           </div>
         </div>
       )}
 
-      <h2 className="text-sm font-bold text-white mb-3">مراحل دورة الحياة</h2>
+      <h2 className="text-sm font-bold text-gray-800 mb-3">مراحل دورة الحياة</h2>
       <div className="flex flex-col gap-2 mb-6">
         {lifecyclePhases.map((p) => (
           <button
             key={p.id} onClick={() => onNavigate("phase", p.id)}
-            className="text-right rounded-2xl bg-white/5 border border-white/10 p-4 hover:bg-white/10 transition-colors"
+            className="text-right rounded-2xl bg-white border border-gray-100 shadow-sm p-4 hover:bg-gray-50 transition-colors"
           >
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <span className="text-xl">{LIFECYCLE_ICONS[p.phase_order - 1]}</span>
                 <div>
-                  <div className="text-sm font-bold text-white">{p.name}</div>
+                  <div className="text-sm font-bold text-gray-800">{p.name}</div>
                   <div className="text-[11px] text-gray-500">{p.completed_sub_phases}/{p.total_sub_phases} مرحلة فرعية مكتملة</div>
                 </div>
               </div>
               <StatusBadge status={p.status === "جارية" ? "قيد التنفيذ" : p.status === "مكتملة" ? "تم" : "لم تبدأ"} />
             </div>
-            <div className="w-full h-1.5 bg-white/10 rounded-full mt-3 overflow-hidden">
+            <div className="w-full h-1.5 bg-gray-100 rounded-full mt-3 overflow-hidden">
               <div className="h-full bg-mint rounded-full" style={{ width: `${p.progress_percent}%` }} />
             </div>
           </button>
         ))}
       </div>
 
-      <h2 className="text-sm font-bold text-white mb-3">الملفات المرجعية</h2>
+      <h2 className="text-sm font-bold text-gray-800 mb-3">الملفات المرجعية</h2>
       <div className="flex flex-col gap-2">
         {docs.map((d) => (
-          <div key={d.id} className="flex items-center gap-3 rounded-2xl bg-white/5 border border-white/10 p-3.5">
+          <div key={d.id} className="flex items-center gap-3 rounded-2xl bg-white border border-gray-100 shadow-sm p-3.5">
             <div className="rounded-lg p-2 bg-sky/20"><FileText size={15} className="text-sky" /></div>
             <div className="flex-1">
-              <div className="text-sm font-semibold text-white">{d.title}</div>
+              <div className="text-sm font-semibold text-gray-800">{d.title}</div>
               <div className="text-[11px] text-gray-500">{d.document_type}</div>
             </div>
           </div>
@@ -551,20 +551,20 @@ function PhaseDetailPage({ lifecyclePhaseId, onNavigate }) {
       </button>
       <div className="flex items-center gap-3 mb-1">
         <span className="text-2xl">{LIFECYCLE_ICONS[lifecyclePhase.phase_order - 1]}</span>
-        <h1 className="text-xl font-bold text-white">{lifecyclePhase.name}</h1>
+        <h1 className="text-xl font-bold text-gray-800">{lifecyclePhase.name}</h1>
       </div>
       <p className="text-sm text-gray-400 mb-6">{lifecyclePhase.description}</p>
       <ErrorBanner message={error} />
 
       <div className="flex flex-col gap-3">
         {subPhases.length === 0 ? (
-          <div className="rounded-2xl bg-white/5 border border-white/10 p-6 text-center text-sm text-gray-400">
+          <div className="rounded-2xl bg-white border border-gray-100 shadow-sm p-6 text-center text-sm text-gray-400">
             مفيش مراحل محددة مربوطة بالمرحلة العامة دي لسه.
           </div>
         ) : subPhases.map((sp) => (
-          <div key={sp.id} className="rounded-2xl bg-white/5 border border-white/10 p-4">
+          <div key={sp.id} className="rounded-2xl bg-white border border-gray-100 shadow-sm p-4">
             <div className="flex items-center justify-between mb-1.5">
-              <span className="text-sm font-bold text-white">{sp.phase_name}</span>
+              <span className="text-sm font-bold text-gray-800">{sp.phase_name}</span>
               <StatusBadge status={sp.status === "جارية" ? "قيد التنفيذ" : sp.status === "مكتملة" ? "تم" : "لم تبدأ"} />
             </div>
             <p className="text-xs text-gray-400 leading-relaxed">{sp.goal}</p>
@@ -686,7 +686,7 @@ function TaskDetailPage({ taskId, member, onNavigate }) {
   if (loading) return <Spinner />;
   if (!task) return <ErrorBanner message="المهمة مش موجودة" />;
 
-  const stageInputClass = "flex-1 rounded-xl border border-white/10 bg-white/5 px-3.5 py-2.5 text-sm text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-sky-400";
+  const stageInputClass = "flex-1 rounded-xl border border-gray-100 bg-white px-3.5 py-2.5 text-sm text-gray-800 placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-sky-400";
 
   return (
     <div className="pb-10">
@@ -694,16 +694,16 @@ function TaskDetailPage({ taskId, member, onNavigate }) {
         <ChevronRight size={14} /> رجوع
       </button>
 
-      <div className="rounded-2xl bg-white/5 border border-white/10 p-5 mb-5">
+      <div className="rounded-2xl bg-white border border-gray-100 shadow-sm p-5 mb-5">
         <div className="flex items-start justify-between gap-3 mb-2">
-          <h1 className="text-lg font-bold text-white flex-1">{task.title}</h1>
+          <h1 className="text-lg font-bold text-gray-800 flex-1">{task.title}</h1>
           <StatusBadge status={task.status} />
         </div>
         {task.description && <p className="text-sm text-gray-400 leading-relaxed mb-3">{task.description}</p>}
         <div className="flex flex-wrap gap-2 text-[11px]">
-          <span className="bg-white/10 text-gray-300 px-2.5 py-1 rounded-full">{task.departments?.name}</span>
-          <span className="bg-white/10 text-gray-300 px-2.5 py-1 rounded-full">أولوية: {task.priority}</span>
-          <span className="bg-white/10 text-gray-300 px-2.5 py-1 rounded-full">تاريخ الاستحقاق: {task.due_date}</span>
+          <span className="bg-gray-100 text-gray-600 px-2.5 py-1 rounded-full">{task.departments?.name}</span>
+          <span className="bg-gray-100 text-gray-600 px-2.5 py-1 rounded-full">أولوية: {task.priority}</span>
+          <span className="bg-gray-100 text-gray-600 px-2.5 py-1 rounded-full">تاريخ الاستحقاق: {task.due_date}</span>
         </div>
 
         <ErrorBanner message={error} />
@@ -714,7 +714,7 @@ function TaskDetailPage({ taskId, member, onNavigate }) {
               <button
                 key={s} onClick={() => updateStatus(s)} disabled={savingStatus}
                 className={`flex-1 rounded-xl py-2.5 text-xs font-bold transition-colors disabled:opacity-50 ${
-                  task.status === s ? "bg-orange text-white" : "bg-white/10 text-gray-300 hover:bg-white/20"
+                  task.status === s ? "bg-orange text-white" : "bg-gray-100 text-gray-600 hover:bg-gray-100"
                 }`}
               >
                 {s}
@@ -724,9 +724,9 @@ function TaskDetailPage({ taskId, member, onNavigate }) {
         )}
       </div>
 
-      <div className="rounded-2xl bg-white/5 border border-white/10 p-5 mb-5">
+      <div className="rounded-2xl bg-white border border-gray-100 shadow-sm p-5 mb-5">
         <div className="flex items-center justify-between mb-3">
-          <h2 className="text-sm font-bold text-white">الخطة التنفيذية</h2>
+          <h2 className="text-sm font-bold text-gray-800">الخطة التنفيذية</h2>
           {!task.plan_registered && <span className="text-[10px] text-amber-400 font-bold">لسه محتاجة تسجيل</span>}
         </div>
 
@@ -735,7 +735,7 @@ function TaskDetailPage({ taskId, member, onNavigate }) {
             <span className="text-xs text-gray-400">تقدير المدة (أيام):</span>
             <input
               type="number" value={estDays} onChange={(e) => setEstDays(e.target.value)} onBlur={saveEstDays}
-              className="w-16 rounded-lg border border-white/10 bg-white/5 px-2 py-1 text-xs text-white text-center focus:outline-none focus:ring-2 focus:ring-sky-400"
+              className="w-16 rounded-lg border border-gray-100 bg-white px-2 py-1 text-xs text-gray-800 text-center focus:outline-none focus:ring-2 focus:ring-sky-400"
             />
           </div>
         )}
@@ -747,12 +747,12 @@ function TaskDetailPage({ taskId, member, onNavigate }) {
             {stages.map((s) => (
               <button
                 key={s.id} onClick={() => canControl && toggleStage(s)}
-                className="w-full text-right flex items-center gap-3 rounded-xl bg-white/5 p-3 hover:bg-white/10 transition-colors"
+                className="w-full text-right flex items-center gap-3 rounded-xl bg-white p-3 hover:bg-gray-50 transition-colors"
               >
                 {s.status === "تم" ? <CheckCircle2 size={16} className="text-emerald-400 shrink-0" />
                   : s.status === "جاري" ? <Clock size={16} className="text-amber-400 shrink-0" />
                   : <Circle size={16} className="text-gray-500 shrink-0" />}
-                <span className={`flex-1 text-sm ${s.status === "تم" ? "text-gray-400 line-through" : "text-white"}`}>{s.stage_name}</span>
+                <span className={`flex-1 text-sm ${s.status === "تم" ? "text-gray-400 line-through" : "text-gray-800"}`}>{s.stage_name}</span>
                 {s.planned_date && <span className="text-[11px] text-gray-500 mono">{s.planned_date}</span>}
               </button>
             ))}
@@ -762,7 +762,7 @@ function TaskDetailPage({ taskId, member, onNavigate }) {
         {canControl && (
           <form onSubmit={addStage} className="flex gap-2">
             <input value={newStage} onChange={(e) => setNewStage(e.target.value)} placeholder="أضف مرحلة جديدة..." className={stageInputClass} />
-            <input type="date" dir="ltr" value={newStageDate} onChange={(e) => setNewStageDate(e.target.value)} className="rounded-xl border border-white/10 bg-white/5 px-3 py-2.5 text-xs text-white" />
+            <input type="date" dir="ltr" value={newStageDate} onChange={(e) => setNewStageDate(e.target.value)} className="rounded-xl border border-gray-100 bg-white px-3 py-2.5 text-xs text-gray-800" />
             <button type="submit" disabled={addingStage} className="rounded-xl px-4 bg-sky text-white shrink-0 disabled:opacity-60">
               {addingStage ? <Loader2 size={16} className="animate-spin" /> : <Plus size={16} />}
             </button>
@@ -770,14 +770,14 @@ function TaskDetailPage({ taskId, member, onNavigate }) {
         )}
       </div>
 
-      <div className="rounded-2xl bg-white/5 border border-white/10 p-5">
-        <h2 className="text-sm font-bold text-white mb-3">الخطة البديلة (Contingency Plan)</h2>
+      <div className="rounded-2xl bg-white border border-gray-100 shadow-sm p-5">
+        <h2 className="text-sm font-bold text-gray-800 mb-3">الخطة البديلة (Contingency Plan)</h2>
         {contingencies.length === 0 ? (
           <div className="text-center text-xs text-gray-500 py-4 mb-3">مفيش خطة بديلة مقترحة.</div>
         ) : (
           <div className="flex flex-col gap-2 mb-3">
             {contingencies.map((c) => (
-              <div key={c.id} className="rounded-xl bg-white/5 p-3">
+              <div key={c.id} className="rounded-xl bg-white p-3">
                 <p className="text-sm text-gray-200">{c.plan_text}</p>
                 <div className="text-[11px] text-gray-500 mt-1.5">اقترحها: {c.team_members?.full_name} · {c.status}</div>
               </div>
@@ -834,28 +834,28 @@ function MyTasksPage({ member, onNavigate }) {
 
   return (
     <div className="pb-10">
-      <h1 className="text-xl font-bold text-white mb-1">صفحتي</h1>
+      <h1 className="text-xl font-bold text-gray-800 mb-1">صفحتي</h1>
       <p className="text-sm text-gray-400 mb-5">كل مهامك عبر كل الإدارات اللي بتديرها</p>
 
       <div className="flex gap-2 mb-5">
-        <button onClick={() => setViewMode("today")} className={`rounded-full px-4 py-2 text-xs font-bold ${viewMode === "today" ? "bg-orange text-white" : "bg-white/10 text-gray-300"}`}>اليوم</button>
-        <button onClick={() => setViewMode("date")} className={`rounded-full px-4 py-2 text-xs font-bold flex items-center gap-1.5 ${viewMode === "date" ? "bg-orange text-white" : "bg-white/10 text-gray-300"}`}>
+        <button onClick={() => setViewMode("today")} className={`rounded-full px-4 py-2 text-xs font-bold ${viewMode === "today" ? "bg-orange text-white" : "bg-gray-100 text-gray-600"}`}>اليوم</button>
+        <button onClick={() => setViewMode("date")} className={`rounded-full px-4 py-2 text-xs font-bold flex items-center gap-1.5 ${viewMode === "date" ? "bg-orange text-white" : "bg-gray-100 text-gray-600"}`}>
           <Calendar size={13} /> تاريخ محدد
         </button>
-        <button onClick={() => setViewMode("all")} className={`rounded-full px-4 py-2 text-xs font-bold ${viewMode === "all" ? "bg-orange text-white" : "bg-white/10 text-gray-300"}`}>كل المهام</button>
+        <button onClick={() => setViewMode("all")} className={`rounded-full px-4 py-2 text-xs font-bold ${viewMode === "all" ? "bg-orange text-white" : "bg-gray-100 text-gray-600"}`}>كل المهام</button>
       </div>
 
       {viewMode === "date" && (
         <input
           type="date" dir="ltr" value={selectedDate} onChange={(e) => setSelectedDate(e.target.value)}
-          className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-2.5 text-sm text-white mb-5"
+          className="w-full rounded-xl border border-gray-100 bg-white px-4 py-2.5 text-sm text-gray-800 mb-5"
         />
       )}
 
       <ErrorBanner message={error} />
 
       {loading ? <Spinner /> : Object.keys(grouped).length === 0 ? (
-        <div className="rounded-2xl bg-white/5 border border-white/10 p-8 text-center text-sm text-gray-400">مفيش مهام في النطاق ده.</div>
+        <div className="rounded-2xl bg-white border border-gray-100 shadow-sm p-8 text-center text-sm text-gray-400">مفيش مهام في النطاق ده.</div>
       ) : (
         Object.entries(grouped).map(([dept, deptTasks]) => (
           <div key={dept} className="mb-6">
@@ -867,10 +867,10 @@ function MyTasksPage({ member, onNavigate }) {
               {deptTasks.map((t) => (
                 <button
                   key={t.id} onClick={() => onNavigate("task", t.id)}
-                  className="text-right rounded-2xl bg-white/5 border border-white/10 p-4 hover:bg-white/10 transition-colors"
+                  className="text-right rounded-2xl bg-white border border-gray-100 shadow-sm p-4 hover:bg-gray-50 transition-colors"
                 >
                   <div className="flex items-center justify-between gap-2">
-                    <span className="text-sm font-semibold text-white">{t.title}</span>
+                    <span className="text-sm font-semibold text-gray-800">{t.title}</span>
                     <StatusBadge status={t.status} />
                   </div>
                   <div className="text-[11px] text-gray-500 mt-1.5 mono">{t.due_date}</div>
@@ -932,11 +932,11 @@ function AdminOfficePage({ member }) {
     return <div className="text-center text-sm text-gray-400 py-16">الصفحة دي للمدير العام بس.</div>;
   }
 
-  const inputClass = "w-full rounded-xl border border-white/10 bg-white/5 px-4 py-2.5 text-sm text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-sky-400";
+  const inputClass = "w-full rounded-xl border border-gray-100 bg-white px-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-sky-400";
 
   return (
     <div className="pb-10">
-      <h1 className="text-xl font-bold text-white mb-1">مكتب الإدارة</h1>
+      <h1 className="text-xl font-bold text-gray-800 mb-1">مكتب الإدارة</h1>
       <p className="text-sm text-gray-400 mb-6">كلّف إدارة بمهمة جديدة — استخدم الهاشتاج قبل اسم الإدارة عشان الاستدعاء يشتغل.</p>
 
       <ErrorBanner message={error} />
@@ -944,7 +944,7 @@ function AdminOfficePage({ member }) {
 
       <div className="flex flex-wrap gap-1.5 mb-4">
         {departments.map((d) => (
-          <button key={d.code} type="button" onClick={() => insertHashtag(d.code)} className="text-[11px] bg-white/10 hover:bg-white/20 text-gray-300 px-2.5 py-1 rounded-full">
+          <button key={d.code} type="button" onClick={() => insertHashtag(d.code)} className="text-[11px] bg-gray-100 hover:bg-gray-100 text-gray-600 px-2.5 py-1 rounded-full">
             #{d.name}
           </button>
         ))}
@@ -976,13 +976,26 @@ function BottomNav({ page, setPage, isGM }) {
     { key: "home", label: "الرئيسية", icon: Home },
     { key: "strategic", label: "الخطة", icon: Building2 },
     { key: "mytasks", label: "صفحتي", icon: ClipboardList },
+    { key: "business-language", label: "لغة البزنس", icon: GraduationCap, external: true },
     ...(isGM ? [{ key: "admin", label: "مكتب الإدارة", icon: Users }] : []),
   ];
   return (
-    <nav className="fixed bottom-0 inset-x-0 bg-hq-panel border-t border-white/10 flex items-stretch z-40" style={{ paddingBottom: "env(safe-area-inset-bottom)" }}>
+    <nav className="fixed bottom-0 inset-x-0 bg-white border-t border-gray-100 flex items-stretch z-40" style={{ paddingBottom: "env(safe-area-inset-bottom)" }}>
       {items.map((it) => {
         const Icon = it.icon;
         const active = page === it.key;
+        if (it.external) {
+          return (
+            <a
+              key={it.key}
+              href={`${import.meta.env.BASE_URL}business-language.html`}
+              className="flex-1 flex flex-col items-center justify-center gap-1 py-2.5"
+            >
+              <Icon size={19} color="#6B7280" />
+              <span className="text-[10px] font-bold" style={{ color: "#6B7280" }}>{it.label}</span>
+            </a>
+          );
+        }
         return (
           <button key={it.key} onClick={() => setPage(it.key)} className="flex-1 flex flex-col items-center justify-center gap-1 py-2.5">
             <Icon size={19} color={active ? "#FF8C42" : "#6B7280"} />
@@ -1004,13 +1017,13 @@ function Dashboard({ member }) {
   }
 
   return (
-    <div className="min-h-screen bg-hq-ink" dir="rtl">
+    <div className="min-h-screen bg-gray-50" dir="rtl">
       <header className="flex items-center justify-between px-5 pt-6 pb-3">
         <div className="flex items-center gap-2.5">
           <BybusHQMark size={30} />
-          <span className="font-bold text-white text-base">Bybus HQ</span>
+          <span className="font-bold text-gray-800 text-base">Bybus HQ</span>
         </div>
-        <button onClick={() => supabase.auth.signOut()} className="text-gray-500 hover:text-gray-300">
+        <button onClick={() => supabase.auth.signOut()} className="text-gray-500 hover:text-gray-600">
           <LogOut size={18} />
         </button>
       </header>
@@ -1072,7 +1085,7 @@ export default function App() {
 
   if (session === undefined) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-hq-ink">
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <Loader2 size={24} className="animate-spin text-gray-500" />
       </div>
     );
@@ -1080,7 +1093,7 @@ export default function App() {
 
   if (!session) return <AuthScreen />;
   if (needsLinking) return <IdentityLinkScreen userId={session.user.id} onLinked={() => loadMember(session.user.id)} />;
-  if (!member) return <div className="min-h-screen flex items-center justify-center bg-hq-ink"><Loader2 size={24} className="animate-spin text-gray-500" /></div>;
+  if (!member) return <div className="min-h-screen flex items-center justify-center bg-gray-50"><Loader2 size={24} className="animate-spin text-gray-500" /></div>;
 
   return <Dashboard member={member} />;
 }
