@@ -310,6 +310,21 @@ function FlightProgressCard({ lifecyclePhases, onOpen }) {
   );
 }
 
+/* ================= زر الرجوع العائم (يمين أسفل الشاشة) ================= */
+
+function BackButton({ onClick }) {
+  return (
+    <button
+      onClick={onClick}
+      aria-label="رجوع"
+      className="fixed z-50 rounded-full bg-white shadow-lg border border-gray-100 flex items-center justify-center active:scale-95 transition-transform"
+      style={{ width: 52, height: 52, bottom: 92, right: 20, boxShadow: "0 6px 20px rgba(0,0,0,0.16)" }}
+    >
+      <ChevronRight size={22} className="text-gray-700" />
+    </button>
+  );
+}
+
 /* ================= الصفحة الرئيسية ================= */
 
 function HomePage({ member, onNavigate }) {
@@ -344,13 +359,9 @@ function HomePage({ member, onNavigate }) {
   const currentPhase = lifecyclePhases.find((p) => p.status === "جارية");
 
   return (
-    <div className="pb-10">
-      <div className="flex items-center justify-between mb-5">
-        <div>
-          <h1 className="text-xl font-bold text-gray-800">أهلاً، {member.full_name.split(" ")[0]}</h1>
-          <p className="text-sm text-gray-400 mt-0.5">{member.role_title}</p>
-        </div>
-      </div>
+    <div className="pb-24">
+      <h1 className="text-xl font-bold text-gray-800 mb-1">أهلاً، {member.full_name.split(" ")[0]}</h1>
+      <p className="text-sm text-gray-400 mb-6">{member.role_title}</p>
 
       <ErrorBanner message={error} />
 
@@ -451,8 +462,8 @@ function StrategicPlanPage({ onNavigate }) {
   if (loading) return <Spinner />;
 
   return (
-    <div className="pb-10">
-      <h1 className="text-xl font-bold text-gray-800 mb-5">الخطة الاستراتيجية</h1>
+    <div className="pb-24">
+      <h1 className="text-xl font-bold text-gray-800 mb-6">الخطة الاستراتيجية</h1>
       <ErrorBanner message={error} />
 
       {profile && (
@@ -499,7 +510,7 @@ function StrategicPlanPage({ onNavigate }) {
       <h2 className="text-sm font-bold text-gray-800 mb-3">الملفات المرجعية</h2>
       <div className="flex flex-col gap-2">
         {docs.map((d) => (
-          <div key={d.id} className="flex items-center gap-3 rounded-2xl bg-white border border-gray-100 shadow-sm p-3.5">
+          <div key={d.id} className="flex items-center gap-3 rounded-2xl bg-white border border-gray-100 shadow-sm p-4">
             <div className="rounded-lg p-2 bg-sky/20"><FileText size={15} className="text-sky" /></div>
             <div className="flex-1">
               <div className="text-sm font-semibold text-gray-800">{d.title}</div>
@@ -514,7 +525,7 @@ function StrategicPlanPage({ onNavigate }) {
 
 /* ================= تفاصيل المرحلة ================= */
 
-function PhaseDetailPage({ lifecyclePhaseId, onNavigate }) {
+function PhaseDetailPage({ lifecyclePhaseId, onBack }) {
   const [lifecyclePhase, setLifecyclePhase] = useState(null);
   const [subPhases, setSubPhases] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -545,10 +556,7 @@ function PhaseDetailPage({ lifecyclePhaseId, onNavigate }) {
   if (!lifecyclePhase) return <ErrorBanner message="المرحلة مش موجودة" />;
 
   return (
-    <div className="pb-10">
-      <button onClick={() => onNavigate("strategic")} className="text-xs text-gray-400 flex items-center gap-1 mb-4">
-        <ChevronRight size={14} /> رجوع للخطة الاستراتيجية
-      </button>
+    <div className="pb-24">
       <div className="flex items-center gap-3 mb-1">
         <span className="text-2xl">{LIFECYCLE_ICONS[lifecyclePhase.phase_order - 1]}</span>
         <h1 className="text-xl font-bold text-gray-800">{lifecyclePhase.name}</h1>
@@ -572,13 +580,14 @@ function PhaseDetailPage({ lifecyclePhaseId, onNavigate }) {
           </div>
         ))}
       </div>
+      <BackButton onClick={onBack} />
     </div>
   );
 }
 
 /* ================= تفاصيل المهمة ================= */
 
-function TaskDetailPage({ taskId, member, onNavigate }) {
+function TaskDetailPage({ taskId, member, onBack }) {
   const [task, setTask] = useState(null);
   const [stages, setStages] = useState([]);
   const [contingencies, setContingencies] = useState([]);
@@ -689,11 +698,7 @@ function TaskDetailPage({ taskId, member, onNavigate }) {
   const stageInputClass = "flex-1 rounded-xl border border-gray-100 bg-white px-3.5 py-2.5 text-sm text-gray-800 placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-sky-400";
 
   return (
-    <div className="pb-10">
-      <button onClick={() => onNavigate("mytasks")} className="text-xs text-gray-400 flex items-center gap-1 mb-4">
-        <ChevronRight size={14} /> رجوع
-      </button>
-
+    <div className="pb-24">
       <div className="rounded-2xl bg-white border border-gray-100 shadow-sm p-5 mb-5">
         <div className="flex items-start justify-between gap-3 mb-2">
           <h1 className="text-lg font-bold text-gray-800 flex-1">{task.title}</h1>
@@ -778,7 +783,7 @@ function TaskDetailPage({ taskId, member, onNavigate }) {
           <div className="flex flex-col gap-2 mb-3">
             {contingencies.map((c) => (
               <div key={c.id} className="rounded-xl bg-white p-3">
-                <p className="text-sm text-gray-200">{c.plan_text}</p>
+                <p className="text-sm text-gray-700">{c.plan_text}</p>
                 <div className="text-[11px] text-gray-500 mt-1.5">اقترحها: {c.team_members?.full_name} · {c.status}</div>
               </div>
             ))}
@@ -793,6 +798,7 @@ function TaskDetailPage({ taskId, member, onNavigate }) {
           </form>
         )}
       </div>
+      <BackButton onClick={onBack} />
     </div>
   );
 }
@@ -833,9 +839,9 @@ function MyTasksPage({ member, onNavigate }) {
   }, {});
 
   return (
-    <div className="pb-10">
+    <div className="pb-24">
       <h1 className="text-xl font-bold text-gray-800 mb-1">صفحتي</h1>
-      <p className="text-sm text-gray-400 mb-5">كل مهامك عبر كل الإدارات اللي بتديرها</p>
+      <p className="text-sm text-gray-400 mb-6">كل مهامك عبر كل الإدارات اللي بتديرها</p>
 
       <div className="flex gap-2 mb-5">
         <button onClick={() => setViewMode("today")} className={`rounded-full px-4 py-2 text-xs font-bold ${viewMode === "today" ? "bg-orange text-white" : "bg-gray-100 text-gray-600"}`}>اليوم</button>
@@ -935,7 +941,7 @@ function AdminOfficePage({ member }) {
   const inputClass = "w-full rounded-xl border border-gray-100 bg-white px-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-sky-400";
 
   return (
-    <div className="pb-10">
+    <div className="pb-24">
       <h1 className="text-xl font-bold text-gray-800 mb-1">مكتب الإدارة</h1>
       <p className="text-sm text-gray-400 mb-6">كلّف إدارة بمهمة جديدة — استخدم الهاشتاج قبل اسم الإدارة عشان الاستدعاء يشتغل.</p>
 
@@ -1008,12 +1014,22 @@ function BottomNav({ page, setPage, isGM }) {
 }
 
 function Dashboard({ member }) {
-  const [page, setPage] = useState("home");
-  const [selectedId, setSelectedId] = useState(null);
+  const [history, setHistory] = useState([{ page: "home", id: null }]);
+  const current = history[history.length - 1];
 
+  // تنقل داخلي (فتح مرحلة، فتح مهمة...) — بيتراكم فوق تاريخ التنقل
   function navigate(target, id) {
-    setPage(target);
-    setSelectedId(id || null);
+    setHistory((h) => [...h, { page: target, id: id || null }]);
+  }
+
+  // التنقل عن طريق الشريط السفلي — بيبدأ تاريخ تنقل جديد من الصفر
+  function switchTab(target) {
+    setHistory([{ page: target, id: null }]);
+  }
+
+  // زر الرجوع العائم — يرجع لآخر صفحة فعلياً زي أي تطبيق حديث
+  function goBack() {
+    setHistory((h) => (h.length > 1 ? h.slice(0, -1) : h));
   }
 
   return (
@@ -1029,15 +1045,15 @@ function Dashboard({ member }) {
       </header>
 
       <main className="px-5" style={{ paddingBottom: 90 }}>
-        {page === "home" && <HomePage member={member} onNavigate={navigate} />}
-        {page === "strategic" && <StrategicPlanPage onNavigate={navigate} />}
-        {page === "phase" && <PhaseDetailPage lifecyclePhaseId={selectedId} onNavigate={navigate} />}
-        {page === "task" && <TaskDetailPage taskId={selectedId} member={member} onNavigate={navigate} />}
-        {page === "mytasks" && <MyTasksPage member={member} onNavigate={navigate} />}
-        {page === "admin" && <AdminOfficePage member={member} />}
+        {current.page === "home" && <HomePage member={member} onNavigate={navigate} />}
+        {current.page === "strategic" && <StrategicPlanPage onNavigate={navigate} />}
+        {current.page === "phase" && <PhaseDetailPage lifecyclePhaseId={current.id} onBack={goBack} />}
+        {current.page === "task" && <TaskDetailPage taskId={current.id} member={member} onBack={goBack} />}
+        {current.page === "mytasks" && <MyTasksPage member={member} onNavigate={navigate} />}
+        {current.page === "admin" && <AdminOfficePage member={member} />}
       </main>
 
-      <BottomNav page={page} setPage={navigate} isGM={member.is_general_manager} />
+      <BottomNav page={current.page} setPage={switchTab} isGM={member.is_general_manager} />
     </div>
   );
 }
