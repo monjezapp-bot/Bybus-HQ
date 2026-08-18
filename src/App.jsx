@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import {
   Home, ClipboardList, Building2, LogOut, Loader2, AlertCircle,
   CheckCircle2, Circle, Clock, ChevronLeft, ChevronRight,
-  FileText, Users, Eye, EyeOff, Plus, Calendar, GraduationCap,
+  FileText, Users, Eye, EyeOff, Plus, Calendar, BookOpen,
 } from "lucide-react";
 import { supabase } from "./supabaseClient";
 
@@ -975,6 +975,63 @@ function AdminOfficePage({ member }) {
   );
 }
 
+/* ================= الدروس التعليمية ================= */
+
+const LESSONS = [
+  {
+    id: "business-language",
+    title: "لغة البزنس",
+    description: "تعلّم أهم مصطلحات الأعمال والإدارة بأسلوب تفاعلي",
+    icon: "💼",
+    file: "business-language.html",
+  },
+  // أي درس جديد يتضاف هنا بنفس الشكل، وهيظهر تلقائياً في صفحة الدروس
+];
+
+function LessonsPage({ onNavigate }) {
+  return (
+    <div className="pb-24">
+      <h1 className="text-xl font-bold text-gray-800 mb-1">الدروس</h1>
+      <p className="text-sm text-gray-400 mb-6">دروس تعليمية قصيرة للفريق</p>
+
+      <div className="flex flex-col gap-2">
+        {LESSONS.map((l) => (
+          <button
+            key={l.id}
+            onClick={() => onNavigate("lesson", l.id)}
+            className="text-right flex items-center gap-3 rounded-2xl bg-white border border-gray-100 shadow-sm p-4 hover:bg-gray-50 transition-colors"
+          >
+            <div className="rounded-xl p-2.5 bg-sky/10 text-2xl leading-none shrink-0">{l.icon}</div>
+            <div className="flex-1">
+              <div className="text-sm font-bold text-gray-800">{l.title}</div>
+              <div className="text-[11px] text-gray-400 mt-0.5">{l.description}</div>
+            </div>
+            <ChevronLeft size={16} className="text-gray-300 shrink-0" />
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function LessonPlayerPage({ lessonId, onBack }) {
+  const lesson = LESSONS.find((l) => l.id === lessonId);
+  if (!lesson) return <ErrorBanner message="الدرس مش موجود" />;
+
+  return (
+    <>
+      <div style={{ position: "fixed", top: 78, bottom: 70, left: 0, right: 0, zIndex: 10, background: "#fff" }}>
+        <iframe
+          src={`${import.meta.env.BASE_URL}${lesson.file}`}
+          title={lesson.title}
+          style={{ width: "100%", height: "100%", border: "none" }}
+        />
+      </div>
+      <BackButton onClick={onBack} />
+    </>
+  );
+}
+
 /* ================= الهيكل الرئيسي ================= */
 
 function BottomNav({ page, setPage, isGM }) {
@@ -982,7 +1039,7 @@ function BottomNav({ page, setPage, isGM }) {
     { key: "home", label: "الرئيسية", icon: Home },
     { key: "strategic", label: "الخطة", icon: Building2 },
     { key: "mytasks", label: "صفحتي", icon: ClipboardList },
-    { key: "business-language", label: "لغة البزنس", icon: GraduationCap, external: true },
+    { key: "lessons", label: "الدروس", icon: BookOpen },
     ...(isGM ? [{ key: "admin", label: "مكتب الإدارة", icon: Users }] : []),
   ];
   return (
@@ -990,18 +1047,6 @@ function BottomNav({ page, setPage, isGM }) {
       {items.map((it) => {
         const Icon = it.icon;
         const active = page === it.key;
-        if (it.external) {
-          return (
-            <a
-              key={it.key}
-              href={`${import.meta.env.BASE_URL}business-language.html`}
-              className="flex-1 flex flex-col items-center justify-center gap-1 py-2.5"
-            >
-              <Icon size={19} color="#6B7280" />
-              <span className="text-[10px] font-bold" style={{ color: "#6B7280" }}>{it.label}</span>
-            </a>
-          );
-        }
         return (
           <button key={it.key} onClick={() => setPage(it.key)} className="flex-1 flex flex-col items-center justify-center gap-1 py-2.5">
             <Icon size={19} color={active ? "#FF8C42" : "#6B7280"} />
@@ -1050,6 +1095,8 @@ function Dashboard({ member }) {
         {current.page === "phase" && <PhaseDetailPage lifecyclePhaseId={current.id} onBack={goBack} />}
         {current.page === "task" && <TaskDetailPage taskId={current.id} member={member} onBack={goBack} />}
         {current.page === "mytasks" && <MyTasksPage member={member} onNavigate={navigate} />}
+        {current.page === "lessons" && <LessonsPage onNavigate={navigate} />}
+        {current.page === "lesson" && <LessonPlayerPage lessonId={current.id} onBack={goBack} />}
         {current.page === "admin" && <AdminOfficePage member={member} />}
       </main>
 
