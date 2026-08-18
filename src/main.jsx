@@ -8,3 +8,12 @@ ReactDOM.createRoot(document.getElementById("root")).render(
     <App />
   </React.StrictMode>
 );
+
+// تسجيل الـ Service Worker — شرط أساسي عند كروم عشان زرار "تثبيت التطبيق" يظهر فعلياً
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker
+      .register(`${import.meta.env.BASE_URL}sw.js`)
+      .catch((err) => console.error("SW registration failed:", err));
+  });
+}
