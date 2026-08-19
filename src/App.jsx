@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import {
   Home, ClipboardList, Building2, LogOut, Loader2, AlertCircle,
   CheckCircle2, Circle, Clock, ChevronLeft, ChevronRight,
-  FileText, Users, Eye, EyeOff, Plus, Calendar, BookOpen,
+  FileText, Users, Eye, EyeOff, Plus, Calendar, BookOpen, Download, X,
 } from "lucide-react";
 import { supabase } from "./supabaseClient";
 
@@ -1058,8 +1058,9 @@ function BottomNav({ page, setPage, isGM }) {
   );
 }
 
-function Dashboard({ member }) {
+function Dashboard({ member, canInstall, onInstall }) {
   const [history, setHistory] = useState([{ page: "home", id: null }]);
+  const [installDismissed, setInstallDismissed] = useState(false);
   const current = history[history.length - 1];
 
   // تنقل داخلي (فتح مرحلة، فتح مهمة...) — بيتراكم فوق تاريخ التنقل
@@ -1089,6 +1090,24 @@ function Dashboard({ member }) {
         </button>
       </header>
 
+      {canInstall && !installDismissed && (
+        <div className="mx-5 mb-4 rounded-2xl bg-orange/10 border border-orange/20 p-3.5 flex items-center gap-3">
+          <div className="rounded-xl p-2 bg-white shrink-0">
+            <Download size={18} className="text-orange" />
+          </div>
+          <div className="flex-1 min-w-0">
+            <div className="text-xs font-bold text-gray-800">ثبّت Bybus HQ على شاشتك الرئيسية</div>
+            <div className="text-[11px] text-gray-500">هتفتحه بضغطة واحدة زي أي تطبيق تاني</div>
+          </div>
+          <button onClick={onInstall} className="rounded-lg px-3 py-2 bg-orange text-white text-xs font-bold shrink-0">
+            تثبيت
+          </button>
+          <button onClick={() => setInstallDismissed(true)} className="text-gray-400 shrink-0 p-1">
+            <X size={16} />
+          </button>
+        </div>
+      )}
+
       <main className="px-5" style={{ paddingBottom: 90 }}>
         {current.page === "home" && <HomePage member={member} onNavigate={navigate} />}
         {current.page === "strategic" && <StrategicPlanPage onNavigate={navigate} />}
@@ -1111,6 +1130,8 @@ export default function App() {
   const [session, setSession] = useState(undefined);
   const [member, setMember] = useState(null);
   const [needsLinking, setNeedsLinking] = useState(false);
+  const [installPrompt, setInstallPrompt] = useState(null);
+  const [isInstalled, setIsInstalled] = useState(false);
 
   const loadMember = useCallback(async (userId) => {
     const { data, error } = await supabase
@@ -1146,6 +1167,33 @@ export default function App() {
     return () => listener.subscription.unsubscribe();
   }, [loadMember]);
 
+  // التقاط حدث "قابل للتثبيت" من المتصفح، عشان الزرار جوه التطبيق يقدر يطلبه في أي وقت
+  useEffect(() => {
+    if (window.matchMedia("(display-mode: standalone)").matches) setIsInstalled(true);
+
+    function onBeforeInstall(e) {
+      e.preventDefault();
+      setInstallPrompt(e);
+    }
+    function onInstalled() {
+      setIsInstalled(true);
+      setInstallPrompt(null);
+    }
+    window.addEventListener("beforeinstallprompt", onBeforeInstall);
+    window.addEventListener("appinstalled", onInstalled);
+    return () => {
+      window.removeEventListener("beforeinstallprompt", onBeforeInstall);
+      window.removeEventListener("appinstalled", onInstalled);
+    };
+  }, []);
+
+  async function triggerInstall() {
+    if (!installPrompt) return;
+    installPrompt.prompt();
+    await installPrompt.userChoice;
+    setInstallPrompt(null);
+  }
+
   if (session === undefined) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
@@ -1158,5 +1206,11 @@ export default function App() {
   if (needsLinking) return <IdentityLinkScreen userId={session.user.id} onLinked={() => loadMember(session.user.id)} />;
   if (!member) return <div className="min-h-screen flex items-center justify-center bg-gray-50"><Loader2 size={24} className="animate-spin text-gray-500" /></div>;
 
-  return <Dashboard member={member} />;
+  return (
+    <Dashboard
+      member={member}
+      canInstall={!!installPrompt && !isInstalled}
+      onInstall={triggerInstall}
+    />
+  );
 }
