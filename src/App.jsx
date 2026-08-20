@@ -230,7 +230,7 @@ function IdentityLinkScreen({ userId, onLinked }) {
             {members.map((m) => (
               <button
                 key={m.id} onClick={() => claim(m.id)} disabled={linking === m.id}
-                className="text-right rounded-xl border border-gray-200 p-3.5 hover:bg-gray-50 flex items-center justify-between disabled:opacity-60"
+                className="text-right rounded-xl border border-gray-200 p-4 hover:bg-gray-50 flex items-center justify-between disabled:opacity-60"
               >
                 <div>
                   <div className="text-sm font-bold text-gray-800">{m.full_name}</div>
@@ -383,11 +383,11 @@ function HomePage({ member, onNavigate }) {
                 <div className="text-[11px] text-gray-400 mt-1">لم تبدأ</div>
               </div>
               <div className="rounded-2xl bg-white border border-gray-100 shadow-sm p-4 text-center">
-                <div className="text-2xl font-bold text-amber-400 mono">{summary.in_progress}</div>
+                <div className="text-2xl font-bold text-amber-600 mono">{summary.in_progress}</div>
                 <div className="text-[11px] text-gray-400 mt-1">قيد التنفيذ</div>
               </div>
               <div className="rounded-2xl bg-white border border-gray-100 shadow-sm p-4 text-center">
-                <div className="text-2xl font-bold text-emerald-400 mono">{summary.completed}</div>
+                <div className="text-2xl font-bold text-emerald-600 mono">{summary.completed}</div>
                 <div className="text-[11px] text-gray-400 mt-1">تم</div>
               </div>
             </div>
@@ -719,7 +719,7 @@ function TaskDetailPage({ taskId, member, onBack }) {
               <button
                 key={s} onClick={() => updateStatus(s)} disabled={savingStatus}
                 className={`flex-1 rounded-xl py-2.5 text-xs font-bold transition-colors disabled:opacity-50 ${
-                  task.status === s ? "bg-orange text-white" : "bg-gray-100 text-gray-600 hover:bg-gray-100"
+                  task.status === s ? "bg-orange text-white" : "bg-gray-100 text-gray-600 hover:bg-gray-200"
                 }`}
               >
                 {s}
@@ -732,7 +732,7 @@ function TaskDetailPage({ taskId, member, onBack }) {
       <div className="rounded-2xl bg-white border border-gray-100 shadow-sm p-5 mb-5">
         <div className="flex items-center justify-between mb-3">
           <h2 className="text-sm font-bold text-gray-800">الخطة التنفيذية</h2>
-          {!task.plan_registered && <span className="text-[10px] text-amber-400 font-bold">لسه محتاجة تسجيل</span>}
+          {!task.plan_registered && <span className="text-[10px] text-amber-600 font-bold">لسه محتاجة تسجيل</span>}
         </div>
 
         {canControl && (
@@ -752,10 +752,10 @@ function TaskDetailPage({ taskId, member, onBack }) {
             {stages.map((s) => (
               <button
                 key={s.id} onClick={() => canControl && toggleStage(s)}
-                className="w-full text-right flex items-center gap-3 rounded-xl bg-white p-3 hover:bg-gray-50 transition-colors"
+                className="w-full text-right flex items-center gap-3 rounded-xl bg-white border border-gray-100 p-3 hover:bg-gray-50 transition-colors"
               >
-                {s.status === "تم" ? <CheckCircle2 size={16} className="text-emerald-400 shrink-0" />
-                  : s.status === "جاري" ? <Clock size={16} className="text-amber-400 shrink-0" />
+                {s.status === "تم" ? <CheckCircle2 size={16} className="text-emerald-600 shrink-0" />
+                  : s.status === "جاري" ? <Clock size={16} className="text-amber-600 shrink-0" />
                   : <Circle size={16} className="text-gray-500 shrink-0" />}
                 <span className={`flex-1 text-sm ${s.status === "تم" ? "text-gray-400 line-through" : "text-gray-800"}`}>{s.stage_name}</span>
                 {s.planned_date && <span className="text-[11px] text-gray-500 mono">{s.planned_date}</span>}
@@ -782,7 +782,7 @@ function TaskDetailPage({ taskId, member, onBack }) {
         ) : (
           <div className="flex flex-col gap-2 mb-3">
             {contingencies.map((c) => (
-              <div key={c.id} className="rounded-xl bg-white p-3">
+              <div key={c.id} className="rounded-xl bg-white border border-gray-100 p-3">
                 <p className="text-sm text-gray-700">{c.plan_text}</p>
                 <div className="text-[11px] text-gray-500 mt-1.5">اقترحها: {c.team_members?.full_name} · {c.status}</div>
               </div>
@@ -946,11 +946,11 @@ function AdminOfficePage({ member }) {
       <p className="text-sm text-gray-400 mb-6">كلّف إدارة بمهمة جديدة — استخدم الهاشتاج قبل اسم الإدارة عشان الاستدعاء يشتغل.</p>
 
       <ErrorBanner message={error} />
-      {success && <div className="bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs rounded-xl p-3 mb-4">{success}</div>}
+      {success && <div className="bg-emerald-50 border border-emerald-100 text-emerald-600 text-xs rounded-xl p-3 mb-4">{success}</div>}
 
       <div className="flex flex-wrap gap-1.5 mb-4">
         {departments.map((d) => (
-          <button key={d.code} type="button" onClick={() => insertHashtag(d.code)} className="text-[11px] bg-gray-100 hover:bg-gray-100 text-gray-600 px-2.5 py-1 rounded-full">
+          <button key={d.code} type="button" onClick={() => insertHashtag(d.code)} className="text-[11px] bg-gray-100 hover:bg-gray-200 text-gray-600 px-2.5 py-1 rounded-full">
             #{d.name}
           </button>
         ))}
@@ -1090,7 +1090,7 @@ function Dashboard({ member, canInstall, onInstall }) {
         </button>
       </header>
 
-      {canInstall && !installDismissed && (
+      {canInstall && !installDismissed && current.page !== "lesson" && (
         <div className="mx-5 mb-4 rounded-2xl bg-orange/10 border border-orange/20 p-3.5 flex items-center gap-3">
           <div className="rounded-xl p-2 bg-white shrink-0">
             <Download size={18} className="text-orange" />
